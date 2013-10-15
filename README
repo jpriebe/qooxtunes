@@ -1,0 +1,86 @@
+-------------------------------------------------------------------------------
+qooxtunes
+-------------------------------------------------------------------------------
+
+qooxtunes is a webinterface addon for XBMC.  It leverages the powerful qooxdoo 
+framework to present the user with a RIA interface that emulates some of the
+best features of iTunes for library management.  It currently only supports 
+music, but it could be extended to handle video and photos.
+
+
+-------------------------------------------------------------------------------
+server software
+-------------------------------------------------------------------------------
+
+qooxtunes is a unique webinterface addon in that it starts up a python-based web
+service that runs on a separate TCP/IP port from the standard XBMC
+JSON-RPC API.
+
+This secondary web service is designed to do a few things that the standard
+API does not provide:
+  - downloading song files in a ZIP archive
+  - listing m3u playlists
+  - reading/creating/editing/deleting m3u playlists and playlist folders
+  - saving metadata changes to multiple songs at once
+
+The web service is found in qooxtunes-ws.py, and it uses some additional
+libraries:
+  - SimpleJSONRPCServer.py (part of the jsonrpclib project,
+    https://code.google.com/p/jsonrpclib/)
+  - zipstream2.py (a quick-and-dirty modification to SpiderOak's zipstream
+    module, https://github.com/gourneau/SpiderOak-zipstream)
+
+This web service brings with it some limitations:
+ - the code only works with XBMC Frodo, since it makes direct database
+   access; the filenames and/or schemas could change between versions
+ - the code currently only works with sqlite databases
+ - because the web service runs on another port from the main web
+   application, it is considered "cross-origin".  The web service uses
+   the appropriate CORS headers, but be advised that some browsers
+   will not support this mechanism.
+   http://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+
+Obviously, I would love to get everything directly from the built-in
+JSON-RPC API, but until all these features are available in the API, this
+secondary web service will be required.
+
+
+-------------------------------------------------------------------------------
+client software
+-------------------------------------------------------------------------------
+
+The client software uses the qooxdoo framework (qooxdoo.org).
+
+To build it, you need to download a copy of the library and unpack it into
+the client/qx directory (e.g. client/qx/qooxdoo-3.0.1-sdk).
+
+Then from the client directory, type "./generate.py build".  If you want to
+do any debugging, I recommend doing "./generate.py source-hybrid".  This will
+compile the necessary qooxdoo classes into an optimized JS file, but will leave
+your class files separate for easy debugging.
+
+You can deploy the code by running tools/deploy.sh.  Note that you will need 
+to edit the file to set the appropriate path to your addon.  This script will
+also deploy the server-side python code.
+
+The deploy script deploys the code in such a way that the build code (the
+compiled and optimized code) is in the default location.  But it also puts
+the debuggable source version into place.
+
+Access the build version at
+
+ http://localhost:8080/
+
+Access the source version at
+
+ http://localhost:8080/source/
+
+Note about SmartTableModel:
+
+I included a copy of the SmartTableModel code in the source tree.  We are not
+actually using that copy during the build; the qooxdoo config.json
+is configured to pull the SmartTableModel code from the contrib repo. 
+I just felt better having the source here as a "just in case" sort of thing.
+
+This file was modified by JetBrains PhpStorm 6.0.3 for binding GitHub repository
+This file was modified by JetBrains PhpStorm 6.0.3 for binding GitHub repository
