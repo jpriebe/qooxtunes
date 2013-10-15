@@ -1,0 +1,53 @@
+------------------------------------------------------------------------------------------
+BUGS
+------------------------------------------------------------------------------------------
+
+- select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't
+appear automatically
+
+
+------------------------------------------------------------------------------------------
+FEATURES
+------------------------------------------------------------------------------------------
+
+- music table
+  - better sorting:
+    - make sort by artist sort by artist/album/track number
+    - make sort by album sort by album/track number
+  - typing jumps you to the first instance of the string in the selected sort column
+  - better searching:
+     - pick from a list of matching artists, and then do an exact match
+       on the artist
+     - use quotes, booleans
+
+- song editor:
+  - multiple artists, album artists, genres
+  - clear fields before opening so there are no weird artifacts
+  - display detailed file info (file size, bitrate, sample rate, format, etc); how to get?
+
+- playlist tree:
+  - right-click menu
+
+- playlist building:
+  - display number of songs, total duration
+  - ability to copy songs from one playlist to another
+  - prettier layout in list box
+  - cancel button
+
+- general
+  - i18n for UI (how to get language prefs from server?)
+
+- addon web service
+  - reliably pass the port number down to the client software
+  - support for mysql
+  - xbmc versions and database schemas
+  - better error checking, logging, reporting
+
+ - how to pass options to add-on?
+    - xbmcplugin.getSetting()
+    - need to use port number in the qooxtunes-ws.py and in the qooxdoo 
+      client code
+    - need to get XBMC version number and figure out what the database 
+      file numbers are along with the schema
+
+- dark theme?

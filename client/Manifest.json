@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "qooxtunes",
+
+    "summary" : "qooxdoo-based web interface for XBMC",
+    "description" : "This application provides an iTunes-like library library management interface for XBMC.",
+    
+    "homepage" : "http://www.smorgasbork.com/",
+
+    "license" : "GPL",
+    "authors" : 
+    [
+      {
+        "name" : "Jason Priebe",
+        "email" : "jason.priebe@gmail.com"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["3.0"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "qooxtunes",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

@@ -1,0 +1,34 @@
+{
+  "info" : 
+  {
+    "name" : "SmartTableModel Demo: searchAsYouType",
+
+    "summary" : "Demo Application for Search as you type filter",
+    "description" : "Using SmartTableModel with a search-as-you-type filter",
+    
+    "homepage" : "",
+
+    "license" : "LGPL/EPL",
+    "authors" : 
+    [
+      {
+        "name" : "Fritz Zaucker (zaucker), Oetiker+Partner AG, CH-4600 Olten",
+        "email" : "fritz.zaucker@oetiker.ch"
+      }
+    ],
+
+    "version" : "trunk",
+    "qooxdoo-versions": ["1.0"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "smart.searchAsYouType",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}
+

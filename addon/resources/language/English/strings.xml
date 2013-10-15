@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<strings>
+    <!-- Root Menu -->
+    <string id="30000">Web Service</string>
+    <string id="30001">Port</string>
+    <string id="30002">Database</string>
+    <string id="30003">Type</string>
+    <string id="30004">SQLite</string>
+    <string id="30005">MySQL</string>
+</strings>

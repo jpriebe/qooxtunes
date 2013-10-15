@@ -1,0 +1,37 @@
+{
+  "info" : 
+  {
+    "name" : "SmartTableModel",
+
+    "summary" : "SmartTable Contribution",
+    "description" : "Combined tree/table with multiple views, and an independent drop-in replacement for the Simple table model, with filtering and better performance.",
+    
+    "homepage" : "http://contrib.qooxdoo.org/project/SmartTableModel",
+
+    "license" : "LGPL/EPL",
+    "authors" : 
+    [
+      {
+        "name" : "Dave Baggett",
+        "email" : "dave@baggett.org"
+      },
+      {
+        "name" : "Derrell Lipman (derrell)",
+        "email" : "Derrell.Lipman@unwireduniverse.com"
+      }
+    ],
+
+    "version" : "0.2",
+    "qooxdoo-versions": ["1.4"]
+  },
+  
+  "provides" : 
+  {
+    "namespace"   : "smart",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "contribution"
+  }
+}

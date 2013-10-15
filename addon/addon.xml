@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="webinterface.qooxtunes"
+  version="1.0.0"
+  name="qooxtunes"
+  provider-name="smorgasbork.com">
+  <requires>
+    <import addon="xbmc.gui" version="4.0.0"/>
+    <import addon="xbmc.json" version="6.0.0"/>
+  </requires>
+  <extension
+    point="xbmc.gui.webinterface"/>
+  <extension point="xbmc.service" library="qooxtunes-ws.py" start="startup"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">qooxtunes web interface</summary>
+    <summary lang="es">interfaz web qooxtunes</summary>
+    <description lang="en">qooxdoo-based web interface for XBMC library management</description>
+    <description lang="es">interfaz web qooxdoo para la gestión de la biblioteca XBMC</description>
+    <platform>all</platform>
+  </extension>
+</addon>

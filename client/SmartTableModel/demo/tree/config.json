@@ -1,0 +1,59 @@
+{
+  "name"    : "SmartTableModel Demo",
+
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    }
+  ],
+
+  "export" :
+  [
+    "api",
+    "build",
+    "clean",
+    "distclean",
+    "fix",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "profiling",
+    "source",
+    "source-all",
+    "test",
+    "test-source",
+    "translation"
+  ],
+
+  "let" :
+  {
+    "APPLICATION"  : "smart.demo",
+    "QOOXDOO_PATH" : "../../../../qooxdoo/trunk",
+    "QXTHEME"      : "smart.theme.modern.Theme",
+    "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+    "LOCALES"      : [ "en" ],
+    "CACHE"        : "${TMPDIR}/cache",
+    "ROOT"         : ".",
+    /* disable "privates" optimization in build version due to current issues */
+//    "OPTIMIZE"     : []
+    "OPTIMIZE"     : ["variables", "basecalls", "strings"]
+  },
+
+  "jobs" :
+  {
+    "libraries" : 
+    {
+      "library" :
+      [
+        {
+          "manifest" : "../../Manifest.json"
+        },
+        {
+          "manifest" : "../../../../TimezoneDate/trunk/Manifest.json"
+        }
+      ]
+    }
+  }
+}
