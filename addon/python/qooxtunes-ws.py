@@ -74,7 +74,6 @@ class qooxtunesJSONRPCRequestHandler(
         self.log_message ("file mode: " + self.wfile.mode)
 
         for data in zipstream2.ZipStream(song_file_paths, "qooxtunes-" + download_id, zipstream2.ZIP_STORED):
-            self.log_message ("  - data")
             self.wfile.write(data)
             self.wfile.flush ();
 

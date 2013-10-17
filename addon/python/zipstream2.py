@@ -297,12 +297,12 @@ class ZipStream:
         as described in section V. of the PKZIP Application Note:
         http://www.pkware.com/business_and_developers/developer/appnote/
         """
-        st = os.stat(filename)
+        st = os.stat(filename.encode('utf-8'))
         mtime = time.localtime(st.st_mtime)
         date_time = mtime[0:6]
         # Create ZipInfo instance to store file information
         if arcname is None:
-            arcname = filename
+            arcname = filename.encode('utf-8')
         arcname = os.path.normpath(os.path.splitdrive(arcname)[1])
         while arcname[0] in (os.sep, os.altsep):
             arcname = arcname[1:]
@@ -316,7 +316,7 @@ class ZipStream:
         zinfo.file_size = st.st_size
         zinfo.header_offset = self.data_ptr    # Start of header bytes
 
-        fp = open(filename, "rb")
+        fp = open(filename.encode('utf-8'), "rb")
         zinfo.CRC = CRC = 0
         zinfo.compress_size = compress_size = 0
         zinfo.file_size = file_size = 0
