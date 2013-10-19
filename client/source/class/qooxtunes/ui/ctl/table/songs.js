@@ -193,14 +193,23 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                         rowData.push ([song.id, search_value, song.track_num, song.title, song.artist, song.album]);
                     }
 
-                    me.__tm.setData ([], false);
-                    me.__tm.setData(rowData, false);
+                    me.__tm.clearAllRows ();
+                    me.__tm.setData(rowData);
 
                     me.__tm.setView (0);
                     me.__tm.updateView (0);
                     me.updateContent ();
 
                     me.__tm.sortByColumn (2, true);
+
+                    // this will force the table to update the number of rows displayed at the bottom
+                    me.set_selected_index (0);
+                    me.clear_selection ();
+
+                    // this is sooooo hacky, but
+                    // we need a way to get the table to recaculate its number of rows and its
+                    // scrollbar height, etc.
+                    me._onResize ();
 
                     qooxtunes.ui.dlg.wait_popup.hide ();
                 }

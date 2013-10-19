@@ -65,6 +65,12 @@ qx.Class.define("qooxtunes.ui.ctl.Table",
             return xary;
         },
 
+        clear_selection : function ()
+        {
+            var m = this.getSelectionModel ();
+            m.resetSelection ();
+        },
+
         set_selected_index : function (idx)
         {
             var m = this.getSelectionModel ();
