@@ -80,7 +80,7 @@ class qooxtunesJSONRPCRequestHandler(
 
         return
 
-    def _get_songids (download_id):
+    def _get_songids (self, download_id):
         self.log_message ("download_id: %s\n" % download_id)
 
         filename = "download-" + download_id + ".dat"
