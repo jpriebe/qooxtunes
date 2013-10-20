@@ -57,8 +57,8 @@ qx.Class.define("qooxtunes.ui.ctl.list.songs",
             {
                 var song_info = sel_items[i];
                 var id = song_info[0];
-                var title = song_info[1];
-                var artist = song_info[2];
+                var title = song_info[2];
+                var artist = song_info[3];
 
                 var caption = title  + " - " + artist;
 
