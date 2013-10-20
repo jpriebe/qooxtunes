@@ -11,6 +11,9 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
 
             this._hostname = document.location.hostname;
             this.find_port ();
+
+            // 2-minute timeout -- exporting can be a bit slow somtimes
+            this._rpc.setTimeout (120000);
         },
 
         members :
