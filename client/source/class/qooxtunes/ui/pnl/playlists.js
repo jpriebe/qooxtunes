@@ -59,6 +59,8 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
                 this.__current_playlist = null;
                 this.__current_tree_node = null;
 
+                this.__lb_playlist.setValue ('');
+
                 this.__t_playlist.clear ();
                 return;
             }
