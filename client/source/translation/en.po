@@ -17,11 +17,11 @@ msgstr ""
 #: qooxtunes/ui/pnl/playlists.js:266 qooxtunes/ui/pnl/playlists.js:287
 #: qooxtunes/ui/pnl/playlists.js:337 qooxtunes/ui/pnl/playlists.js:364
 #: qooxtunes/ui/pnl/playlists.js:435 qooxtunes/ui/pnl/playlists.js:538
-#: qooxtunes/io/remote/xbmc_ext.js:63
+#: qooxtunes/io/remote/xbmc_ext.js:65
 msgid "Error"
 msgstr ""
 
-#: qooxtunes/io/remote/xbmc.js:30 qooxtunes/io/remote/xbmc_ext.js:64
+#: qooxtunes/io/remote/xbmc.js:30 qooxtunes/io/remote/xbmc_ext.js:66
 msgid "Exception during async call: %1"
 msgstr ""
 
@@ -34,39 +34,39 @@ msgid "Loading playlist %1..."
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:625
-#: qooxtunes/ui/dlg/multi_song_editor.js:487
+#: qooxtunes/ui/dlg/multi_song_editor.js:488
 #: qooxtunes/ui/ctl/table/songs.js:89
 msgid "Track #"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:549
-#: qooxtunes/ui/dlg/multi_song_editor.js:393
+#: qooxtunes/ui/dlg/multi_song_editor.js:394
 #: qooxtunes/ui/ctl/table/songs.js:90 qooxtunes/ui/ctl/table/songs.js:98
 msgid "Name"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:559
-#: qooxtunes/ui/dlg/multi_song_editor.js:405
+#: qooxtunes/ui/dlg/multi_song_editor.js:406
 #: qooxtunes/ui/ctl/table/songs.js:91 qooxtunes/ui/ctl/table/songs.js:99
 #: qooxtunes/ui/tabview/page/music.js:162
 msgid "Artist"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:588
-#: qooxtunes/ui/dlg/multi_song_editor.js:442
+#: qooxtunes/ui/dlg/multi_song_editor.js:443
 #: qooxtunes/ui/ctl/table/songs.js:92 qooxtunes/ui/ctl/table/songs.js:100
 #: qooxtunes/ui/tabview/page/music.js:167
 msgid "Album"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:609
-#: qooxtunes/ui/dlg/multi_song_editor.js:468
+#: qooxtunes/ui/dlg/multi_song_editor.js:469
 #: qooxtunes/ui/ctl/table/songs.js:101 qooxtunes/ui/tabview/page/music.js:172
 msgid "Genre"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:562
-#: qooxtunes/ui/dlg/multi_song_editor.js:408
+#: qooxtunes/ui/dlg/multi_song_editor.js:409
 #: qooxtunes/ui/ctl/table/songs.js:102
 msgid "Year"
 msgstr ""
@@ -84,7 +84,7 @@ msgid "Playcount"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:619
-#: qooxtunes/ui/dlg/multi_song_editor.js:481
+#: qooxtunes/ui/dlg/multi_song_editor.js:482
 #: qooxtunes/ui/ctl/table/songs.js:106
 msgid "Rating"
 msgstr ""
@@ -101,87 +101,91 @@ msgstr ""
 msgid "Loading playlist %1"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:518
+#: qooxtunes/ui/ctl/table/songs.js:531
 msgid "Exporting..."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:528
+#: qooxtunes/ui/ctl/table/songs.js:541
 msgid "Error exporting to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:528 qooxtunes/ui/ctl/table/songs.js:540
+#: qooxtunes/ui/ctl/table/songs.js:541 qooxtunes/ui/ctl/table/songs.js:553
 msgid "Export"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:534
+#: qooxtunes/ui/ctl/table/songs.js:547
 msgid "Successfully exported song to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:538
+#: qooxtunes/ui/ctl/table/songs.js:551
 msgid "Successfully exported songs to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:555 qooxtunes/ui/ctl/table/songs.js:563
-msgid "Download song"
-msgstr ""
-
-#: qooxtunes/ui/ctl/table/songs.js:556 qooxtunes/ui/ctl/table/songs.js:564
+#: qooxtunes/ui/ctl/table/songs.js:568 qooxtunes/ui/ctl/table/songs.js:577
 msgid "Export song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:571
-msgid "Download songs"
+#: qooxtunes/ui/ctl/table/songs.js:569 qooxtunes/ui/ctl/table/songs.js:576
+msgid "Download song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:572
+#: qooxtunes/ui/ctl/table/songs.js:584
 msgid "Export songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:704
+#: qooxtunes/ui/ctl/table/songs.js:585
+msgid "Download songs"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:717
 msgid "Edit Info"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:710
-msgid "Download Song"
+#: qooxtunes/ui/ctl/table/songs.js:723
+msgid "Export Song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:716
-msgid "Export Song"
+#: qooxtunes/ui/ctl/table/songs.js:729
+msgid "Download Song"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:29 qooxtunes/ui/dlg/multi_song_editor.js:24
 msgid "Song Info"
 msgstr ""
 
+#: qooxtunes/ui/dlg/multi_song_editor.js:57
+msgid "Saving..."
+msgstr ""
+
 #: qooxtunes/ui/dlg/song_editor.js:541
-#: qooxtunes/ui/dlg/multi_song_editor.js:385
+#: qooxtunes/ui/dlg/multi_song_editor.js:386
 msgid "Info"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:578
-#: qooxtunes/ui/dlg/multi_song_editor.js:430
+#: qooxtunes/ui/dlg/multi_song_editor.js:431
 msgid "Album Artist"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:598
-#: qooxtunes/ui/dlg/multi_song_editor.js:454
+#: qooxtunes/ui/dlg/multi_song_editor.js:455
 #: qooxtunes/ui/tabview/page/music.js:177
 msgid "Comments"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:622
-#: qooxtunes/ui/dlg/multi_song_editor.js:484
+#: qooxtunes/ui/dlg/multi_song_editor.js:485
 msgid "Disc #"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:668
-#: qooxtunes/ui/dlg/multi_song_editor.js:523
+#: qooxtunes/ui/dlg/multi_song_editor.js:524
 #: qooxtunes/ui/dlg/text_prompt.js:105
 msgid "OK"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:673 qooxtunes/ui/dlg/yes_no.js:71
-#: qooxtunes/ui/dlg/multi_song_editor.js:528
+#: qooxtunes/ui/dlg/multi_song_editor.js:529
 #: qooxtunes/ui/dlg/text_prompt.js:111
 msgid "Cancel"
 msgstr ""

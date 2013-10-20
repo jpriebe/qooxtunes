@@ -54,6 +54,7 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
 
             on_btn_ok_execute : function ()
             {
+                qooxtunes.ui.dlg.wait_popup.show (this.tr ("Saving..."));
                 var fields = this.gather_modified_fields ();
 
                 if (this.__num_modified_fields < 1)
@@ -66,7 +67,6 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
                     return;
                 }
 
-                var me = this;
                 this.save_modified_fields ();
             },
 
@@ -333,6 +333,7 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
                         if (me.__curr_save_idx > me.__song_ids.length - 1)
                         {
                             me.__ok_callback (me.__song_ids, me.__save_fields);
+                            qooxtunes.ui.dlg.wait_popup.hide ();
                             me.close ();
                         }
                         else
