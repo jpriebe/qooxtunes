@@ -131,26 +131,26 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
 
             clear_fields : function ()
             {
-                this.__cb_title.setValue (false);
                 this.__tf_title.setValue ('');
-                this.__cb_artist.setValue (false);
+                this.__cb_title.setValue (false);
                 this.__tf_artist.setValue ('');
-                this.__cb_year.setValue (false);
+                this.__cb_artist.setValue (false);
                 this.__tf_year.setValue ('');
-                this.__cb_albumartist.setValue (false);
+                this.__cb_year.setValue (false);
                 this.__tf_albumartist.setValue ('');
-                this.__cb_album.setValue (false);
+                this.__cb_albumartist.setValue (false);
                 this.__tf_album.setValue ('');
-                this.__cb_comment.setValue (false);
+                this.__cb_album.setValue (false);
                 this.__ta_comment.setValue ('');
-                this.__cb_genre.setValue (false);
+                this.__cb_comment.setValue (false);
                 this.__c_genre.setValue ('');
-                this.__cb_rating.setValue (false);
+                this.__cb_genre.setValue (false);
                 this.__tf_rating.setValue ('');
-                this.__cb_disc_number.setValue (false);
+                this.__cb_rating.setValue (false);
                 this.__tf_disc_number.setValue ('');
-                this.__cb_track_number.setValue (false);
+                this.__cb_disc_number.setValue (false);
                 this.__tf_track_number.setValue ('');
+                this.__cb_track_number.setValue (false);
             },
 
             request_genres : function ()

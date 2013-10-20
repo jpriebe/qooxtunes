@@ -24,7 +24,7 @@ qx.Class.define("qooxtunes.ui.ctl.ComboBox",
         {
             auto_complete : function (e)
             {
-                var typed_val = this.this.getChildControl ('textfield').getValue ().toLowerCase ();
+                var typed_val = this.getChildControl ('textfield').getValue ().toLowerCase ();
                 var n_typed_chars = typed_val.length;
 
                 var xary = this.getChildren();
@@ -35,7 +35,7 @@ qx.Class.define("qooxtunes.ui.ctl.ComboBox",
 
                     if (test_str == typed_val)
                     {
-                        this.this.getChildControl ('textfield').setValue (l);
+                        this.getChildControl ('textfield').setValue (l);
                         this.setTextSelection (n_typed_chars);
                         break;
                     }

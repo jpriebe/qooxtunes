@@ -289,11 +289,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             row.push (data[7]); // album
 
             var search_value = '';
-            if (this.__limited_columns)
-            {
-                search_value = row[3] + ' ' + row[4] + ' ' + row[5];
-            }
-            else
+            if (!this.__limited_columns)
             {
                 if (data[4] != null)
                 {
@@ -338,14 +334,11 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 }
 
                 row.push (data[11]); // comment
-
-                search_value = row[2] + ' ' + row[3] + ' ' + row[4] + ' ' + row[5] + ' ' + row[11];
             }
 
-            row[1] = search_value;
-
             var id = row[0];
-            for (var i = 0; i < this.__tm.getColumnCount (); i++)
+            // skip columns 0 and 1 (ID and search value)
+            for (var i = 2; i < this.__tm.getColumnCount (); i++)
             {
                 if (!only_modified || row[i] !== null)
                 {
@@ -357,6 +350,26 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 }
             }
 
+            // now set the search value
+            row_idx = this.__tm.locate (0, id);
+
+            if (this.__limited_columns)
+            {
+                search_value = this.__tm.getValue (3, row_idx) + ' '
+                    + this.__tm.getValue (4, row_idx) + ' '
+                    + this.__tm.getValue (5, row_idx);
+            }
+            else
+            {
+                search_value = this.__tm.getValue (2, row_idx) + ' '
+                    + this.__tm.getValue (3, row_idx)  + ' '
+                    + this.__tm.getValue (4, row_idx) + ' '
+                    + this.__tm.getValue (5, row_idx)  + ' '
+                    + this.__tm.getValue (11, row_idx);
+            }
+
+            console.log ("new search value: " + search_value);
+            this.__tm.setValue (1, row_idx, search_value)
         },
 
         on_multi_editor_ok : function (songids, data)
