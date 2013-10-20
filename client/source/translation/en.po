@@ -12,20 +12,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: qooxtunes/ui/dlg/song_editor.js:65 qooxtunes/ui/dlg/song_editor.js:72
-#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:28
+#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:29
 #: qooxtunes/ui/pnl/playlists.js:216 qooxtunes/ui/pnl/playlists.js:237
 #: qooxtunes/ui/pnl/playlists.js:266 qooxtunes/ui/pnl/playlists.js:287
 #: qooxtunes/ui/pnl/playlists.js:337 qooxtunes/ui/pnl/playlists.js:364
 #: qooxtunes/ui/pnl/playlists.js:435 qooxtunes/ui/pnl/playlists.js:538
-#: qooxtunes/io/remote/xbmc_ext.js:62
+#: qooxtunes/io/remote/xbmc_ext.js:63
 msgid "Error"
 msgstr ""
 
-#: qooxtunes/io/remote/xbmc.js:29 qooxtunes/io/remote/xbmc_ext.js:63
+#: qooxtunes/io/remote/xbmc.js:30 qooxtunes/io/remote/xbmc_ext.js:64
 msgid "Exception during async call: %1"
 msgstr ""
 
-#: qooxtunes/io/remote/xbmc_ext.js:44
+#: qooxtunes/io/remote/xbmc_ext.js:45
 msgid "[xbmc_ext.find_port] port = %1"
 msgstr ""
 
@@ -101,20 +101,52 @@ msgstr ""
 msgid "Loading playlist %1"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:499 qooxtunes/ui/ctl/table/songs.js:505
+#: qooxtunes/ui/ctl/table/songs.js:518
+msgid "Exporting..."
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:528
+msgid "Error exporting to export folder."
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:528 qooxtunes/ui/ctl/table/songs.js:540
+msgid "Export"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:534
+msgid "Successfully exported song to export folder."
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:538
+msgid "Successfully exported songs to export folder."
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:555 qooxtunes/ui/ctl/table/songs.js:563
 msgid "Download song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:511
+#: qooxtunes/ui/ctl/table/songs.js:556 qooxtunes/ui/ctl/table/songs.js:564
+msgid "Export song"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:571
 msgid "Download songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:643
+#: qooxtunes/ui/ctl/table/songs.js:572
+msgid "Export songs"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:704
 msgid "Edit Info"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:649
-msgid "Download File"
+#: qooxtunes/ui/ctl/table/songs.js:710
+msgid "Download Song"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:716
+msgid "Export Song"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:29 qooxtunes/ui/dlg/multi_song_editor.js:24
@@ -303,3 +335,9 @@ msgstr ""
 #: qooxtunes/ui/tabview/page/video.js:7
 msgid "Video"
 msgstr ""
+
+#~ msgid "Download File"
+#~ msgstr ""
+
+#~ msgid "Export File"
+#~ msgstr ""

@@ -498,25 +498,77 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         },
 
+        on_cmd_export : function (e)
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length < 1)
+            {
+                return;
+            }
+
+            var ids = [];
+            for (var i = 0; i < sel_items.length; i++)
+            {
+                ids.push (sel_items[i][0]);
+            }
+
+            var rpc = qooxtunes.io.remote.xbmc_ext.getInstance ();
+
+            qooxtunes.ui.dlg.wait_popup.show (this.tr ("Exporting..."));
+
+            var me = this;
+            rpc.callAsync("export_songs", [
+                ids
+            ],
+                function (result, exc) {
+                    qooxtunes.ui.dlg.wait_popup.hide ();
+
+                    if (result == false) {
+                        qooxtunes.ui.dlg.msgbox.go (me.tr ("Export"), me.tr ("Error exporting to export folder."));
+                    }
+                    else {
+                        var msg = '';
+                        if (sel_items.length == 1)
+                        {
+                            msg = me.tr ('Successfully exported song to export folder.');
+                        }
+                        else
+                        {
+                            msg = me.tr ('Successfully exported songs to export folder.');
+                        }
+                        qooxtunes.ui.dlg.msgbox.go (me.tr ("Export"), msg);
+                    }
+                }
+            );
+
+        },
+
         on_changeSelection : function (e) {
             var num_selected = this.getSelectionModel().getSelectedCount ();
 
             if (num_selected == 0)
             {
                 this.__btn_edit.setEnabled (false);
+                this.__btn_export.setEnabled (false);
                 this.__btn_download.setEnabled (false);
+                this.__btn_export.setLabel (this.tr ('Export song'));
                 this.__btn_download.setLabel (this.tr ('Download song'));
             }
             else if (num_selected == 1)
             {
                 this.__btn_edit.setEnabled (true);
+                this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
                 this.__btn_download.setLabel (this.tr ('Download song'));
+                this.__btn_export.setLabel (this.tr ('Export song'));
             }
             else
             {
                 this.__btn_edit.setEnabled (true);
+                this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
+                this.__btn_export.setLabel (this.tr ('Export songs'));
                 this.__btn_download.setLabel (this.tr ('Download songs'));
             }
         },
@@ -652,10 +704,16 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             this.__btn_edit = new qx.ui.menu.Button(this.tr ("Edit Info"), "", this.__cmd_edit);
             this.__cm_songs.add (this.__btn_edit);
 
+            this.__cmd_export = new qx.ui.core.Command("Ctrl+E");
+            this.__cmd_export.addListener("execute", this.on_cmd_export, this);
+
+            this.__btn_export = new qx.ui.menu.Button(this.tr ("Export Song"), "", this.__cmd_export);
+            this.__cm_songs.add (this.__btn_export);
+
             this.__cmd_download = new qx.ui.core.Command("Ctrl+F");
             this.__cmd_download.addListener("execute", this.on_cmd_download, this);
 
-            this.__btn_download = new qx.ui.menu.Button(this.tr ("Download File"), "", this.__cmd_download);
+            this.__btn_download = new qx.ui.menu.Button(this.tr ("Download Song"), "", this.__cmd_download);
             this.__cm_songs.add (this.__btn_download);
 
             this.setContextMenu (this.__cm_songs);

@@ -208,7 +208,7 @@ class ZipStream:
                 break
 
             if first not in self.path_segments:
-                self.path_segments[first] = 0;
+                self.path_segments[first] = 0
 
             self.path_segments[first] += 1
             file = first

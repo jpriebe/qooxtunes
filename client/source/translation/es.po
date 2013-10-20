@@ -1,3 +1,4 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
@@ -11,20 +12,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: qooxtunes/ui/dlg/song_editor.js:65 qooxtunes/ui/dlg/song_editor.js:72
-#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:28
+#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:29
 #: qooxtunes/ui/pnl/playlists.js:216 qooxtunes/ui/pnl/playlists.js:237
 #: qooxtunes/ui/pnl/playlists.js:266 qooxtunes/ui/pnl/playlists.js:287
 #: qooxtunes/ui/pnl/playlists.js:337 qooxtunes/ui/pnl/playlists.js:364
 #: qooxtunes/ui/pnl/playlists.js:435 qooxtunes/ui/pnl/playlists.js:538
-#: qooxtunes/io/remote/xbmc_ext.js:62
+#: qooxtunes/io/remote/xbmc_ext.js:63
 msgid "Error"
 msgstr "Error"
 
-#: qooxtunes/io/remote/xbmc.js:29 qooxtunes/io/remote/xbmc_ext.js:63
+#: qooxtunes/io/remote/xbmc.js:30 qooxtunes/io/remote/xbmc_ext.js:64
 msgid "Exception during async call: %1"
 msgstr "Excepción durante la llamada asincrónica: %1"
 
-#: qooxtunes/io/remote/xbmc_ext.js:44
+#: qooxtunes/io/remote/xbmc_ext.js:45
 msgid "[xbmc_ext.find_port] port = %1"
 msgstr "[Xbmc_ext.find_port] port = %1"
 
@@ -100,21 +101,53 @@ msgstr "Cargando XBMC biblioteca ..."
 msgid "Loading playlist %1"
 msgstr "Cargando la lista %1"
 
-#: qooxtunes/ui/ctl/table/songs.js:499 qooxtunes/ui/ctl/table/songs.js:505
+#: qooxtunes/ui/ctl/table/songs.js:518
+msgid "Exporting..."
+msgstr "Exportación..."
+
+#: qooxtunes/ui/ctl/table/songs.js:528
+msgid "Error exporting to export folder."
+msgstr "Error exportación para exportar carpeta."
+
+#: qooxtunes/ui/ctl/table/songs.js:528 qooxtunes/ui/ctl/table/songs.js:540
+msgid "Export"
+msgstr "Exportar"
+
+#: qooxtunes/ui/ctl/table/songs.js:534
+msgid "Successfully exported song to export folder."
+msgstr "Éxito exportado canción para exportar carpeta."
+
+#: qooxtunes/ui/ctl/table/songs.js:538
+msgid "Successfully exported songs to export folder."
+msgstr "Canciones con éxito exportados a exportar carpeta."
+
+#: qooxtunes/ui/ctl/table/songs.js:555 qooxtunes/ui/ctl/table/songs.js:563
 msgid "Download song"
 msgstr "Descarga canción"
 
-#: qooxtunes/ui/ctl/table/songs.js:511
-msgid "Download songs"
-msgstr "Descarga canciones"
+#: qooxtunes/ui/ctl/table/songs.js:556 qooxtunes/ui/ctl/table/songs.js:564
+msgid "Export song"
+msgstr "Exporta canción"
 
-#: qooxtunes/ui/ctl/table/songs.js:643
+#: qooxtunes/ui/ctl/table/songs.js:571
+msgid "Download songs"
+msgstr "Descarga canciónes"
+
+#: qooxtunes/ui/ctl/table/songs.js:572
+msgid "Export songs"
+msgstr "Exporta canciónes"
+
+#: qooxtunes/ui/ctl/table/songs.js:704
 msgid "Edit Info"
 msgstr "Editar información"
 
-#: qooxtunes/ui/ctl/table/songs.js:649
-msgid "Download File"
-msgstr "Descargar archivo"
+#: qooxtunes/ui/ctl/table/songs.js:710
+msgid "Download Song"
+msgstr "Descarga canción"
+
+#: qooxtunes/ui/ctl/table/songs.js:716
+msgid "Export Song"
+msgstr "Exporta canción"
 
 #: qooxtunes/ui/dlg/song_editor.js:29 qooxtunes/ui/dlg/multi_song_editor.js:24
 msgid "Song Info"

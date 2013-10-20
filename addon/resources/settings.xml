@@ -2,6 +2,7 @@
 <settings>
     <category label="30000">
         <setting label="30001" type="number" id="ws_port" default="9100"/>
+        <setting label="30006" type="folder" id="export_folder" option="writeable"/>
     </category>
     <!--
     <category label="30002">

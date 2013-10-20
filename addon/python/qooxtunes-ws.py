@@ -17,6 +17,7 @@ import xbmcaddon
 import SimpleJSONRPCServer
 import zipstream2
 
+import file_exporter
 import xbmcdb
 import m3u
 
@@ -40,17 +41,14 @@ class qooxtunesJSONRPCRequestHandler(
         SimpleJSONRPCServer.SimpleJSONRPCRequestHandler):
 
     def download_songs (self, download_id):
-
-        self.log_message ("download_id: %s\n" % download_id)
-
-        filename = "download-" + download_id + ".dat"
-        fullpath = os.path.join (xbmc.translatePath('special://temp'), filename)
-
-        self.log_message ("fullpath: %s\n" % fullpath)
-
-        songids = pickle.load ( open (fullpath, "rb") )
-
-        os.unlink (fullpath)
+        try:
+            songids = self._get_songids (download_id)
+        except IOError as e:
+            self.log_message ("[download_songs] could not load songids from pickled object")
+            self.send_response (404)
+            self.send_CORS_headers ()
+            self.end_headers ()
+            return
 
         download_filename = "qooxtunes-" + download_id + ".zip"
 
@@ -81,6 +79,21 @@ class qooxtunesJSONRPCRequestHandler(
         self.log_message ("done.")
 
         return
+
+    def _get_songids (download_id):
+        self.log_message ("download_id: %s\n" % download_id)
+
+        filename = "download-" + download_id + ".dat"
+        fullpath = os.path.join (xbmc.translatePath('special://temp'), filename)
+
+        self.log_message ("fullpath: %s\n" % fullpath)
+
+        songids = pickle.load ( open (fullpath, "rb") )
+
+        os.unlink (fullpath)
+
+        return songids
+
 
     def send_CORS_OPTIONS_headers (self):
         self.send_CORS_headers ()
@@ -190,9 +203,7 @@ class qooxtunesWebService:
                 ['string.' + method for method in list_public_methods(self.string)]
 
 
-
     def get_download_songs_url (self, songids):
-
         download_id = str (time.time ()) + "-" + str (os.getpid ())
         filename = "download-" + download_id + ".dat"
         fullpath = os.path.join (xbmc.translatePath('special://temp'), filename)
@@ -200,7 +211,6 @@ class qooxtunesWebService:
         pickle.dump (songids, open (fullpath, "wb"))
 
         return "/download_songs?download_id=" + download_id
-
 
 
     def _get_path_list( self, paths ):
@@ -468,10 +478,41 @@ class qooxtunesWebService:
             db.save_multiple_songs (track_ids, changes)
             return
 
+    def export_songs (self, songids):
+
+        __settings__  = xbmcaddon.Addon('webinterface.qooxtunes')
+        export_folder = __settings__.getSetting('export_folder')
+
+        if (export_folder == ''):
+            print "[export_songs] export folder not set; exiting"
+            return False
+
+        db = xbmcdb.songdb()
+        songs = db.get_songs (songids)
+
+        song_file_paths = []
+        for s in songs:
+            if len (s.files) > 0:
+                song_file_paths.append (s.files[0])
+
+        print "[export_songs] exporting files to '" + export_folder + "'..."
+
+        exporter = file_exporter.file_exporter ()
+
+        print "[export_songs] created exporter object..."
+
+        if (exporter.export (export_folder, song_file_paths)):
+            print "[export_songs] done."
+            return True
+        else:
+            print "[export_songs] error occurred during export: " + exporter.get_error_message ()
+            return False
+
 
     def get_song_count (self):
         num_songs = xbmcdb.song_db.get_song_count ();
         return num_songs
+
 
 
     def hello (self):
