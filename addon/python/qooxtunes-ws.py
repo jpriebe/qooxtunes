@@ -324,7 +324,7 @@ class qooxtunesWebService:
         print "[create_playlist_folder] <%s> playlist_folder['name']: %s\n" % (media_type, playlist_folder['name'])
 
         ncomp = len (playlist_folder['path'])
-        last_component = urllib.quote (playlist_folder['path'][ncomp - 1], '')
+        last_component = urllib.quote (playlist_folder['path'][ncomp - 1], ' ()[],@!&%"\'')
         playlist_folder['path'][ncomp - 1] = last_component
 
         filename = ''
@@ -351,7 +351,7 @@ class qooxtunesWebService:
         print "[create_playlist] <%s> playlist['name']: %s\n" % (media_type, playlist['name'])
 
         ncomp = len (playlist['path'])
-        last_component = urllib.quote (playlist['path'][ncomp - 1], '')
+        last_component = urllib.quote (playlist['path'][ncomp - 1], ' ()[],@!&%"\'')
         playlist['path'][ncomp - 1] = last_component
 
         filename = ''
@@ -404,7 +404,7 @@ class qooxtunesWebService:
                 old_filename = os.path.join (old_filename, component);
 
         ncomp = len (new_path_components)
-        last_component = urllib.quote (new_path_components[ncomp - 1], '')
+        last_component = urllib.quote (new_path_components[ncomp - 1], ' ()[],@!&%"\'')
         new_path_components[ncomp - 1] = last_component
 
         new_filename = ''
