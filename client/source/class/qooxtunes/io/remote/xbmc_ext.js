@@ -61,7 +61,7 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
 
                 var args = [];
 
-                me = this;
+                var me = this;
 
                 var handler_wrapper = function (result, exc) {
                     if (exc != null) {
