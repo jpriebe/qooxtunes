@@ -81,6 +81,3 @@ I included a copy of the SmartTableModel code in the source tree.  We are not
 actually using that copy during the build; the qooxdoo config.json
 is configured to pull the SmartTableModel code from the contrib repo. 
 I just felt better having the source here as a "just in case" sort of thing.
-
-This file was modified by JetBrains PhpStorm 6.0.3 for binding GitHub repository
-This file was modified by JetBrains PhpStorm 6.0.3 for binding GitHub repository
