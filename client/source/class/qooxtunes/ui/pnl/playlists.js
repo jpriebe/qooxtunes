@@ -565,6 +565,9 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
             this.__t_playlists.addListener ('changeSelection', this.on_t_playlists_changeSelection, this);
             this.__spc_playlists.add (this.__t_playlists, { top: 0, left: 0, right: 0, bottom: 48 });
 
+            // not working...
+            // qx.io.ImageLoader.load ("qooxtunes/icon/16/folder-close-alt.png");
+
             this.__drag_indicator = new qx.ui.core.Widget;
             this.__drag_indicator.setDecorator(new qx.ui.decoration.Single().set({
                 top : [ 1, "solid", "#33508D" ]}));

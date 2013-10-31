@@ -4,7 +4,7 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
 
     construct : function ()
     {
-        this.base (arguments, this.tr ("Music"), "icon/32/mimetypes/media-audio.png");
+        this.base (arguments, this.tr ("Music"), "qooxtunes/icon/16/music.png");
         this.init ();
     },
 

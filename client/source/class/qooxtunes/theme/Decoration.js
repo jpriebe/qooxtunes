@@ -14,5 +14,20 @@ qx.Theme.define("qooxtunes.theme.Decoration",
 
   decorations :
   {
+      "rounded" : {
+          include : "main",
+
+          style : {
+              radius : 5
+          }
+      },
+
+      "rounded_slider" : {
+          include : "main",
+
+          style : {
+              radius : 3
+          }
+      }
   }
 });

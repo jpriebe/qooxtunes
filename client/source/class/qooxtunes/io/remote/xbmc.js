@@ -24,10 +24,12 @@ qx.Class.define("qooxtunes.io.remote.xbmc",
 
             var args = [];
 
+            var me = this;
+
             var handler_wrapper = function (result, exc) {
                 if (exc != null) {
-                    qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
-                        this.tr ("Exception during async call: %1",  exc))
+                    qooxtunes.ui.dlg.msgbox.go (me.tr ("Error"),
+                        me.tr ("Exception during async call: %1",  exc))
                     return;
                 }
 

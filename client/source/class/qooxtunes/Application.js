@@ -13,10 +13,16 @@
  * This is the main application class of your custom application "qooxtunes"
  *
  * @asset(qooxtunes/*)
+ * @asset(qooxtunes/icon/16/*)
+ * @asset(qooxtunes/icon/32/*)
+ * @asset(qooxtunes/icon/64/*)
+ * @asset(qx/icon/${qx.icontheme}/16/mimetypes/*)
  * @asset(qx/icon/${qx.icontheme}/22/mimetypes/*)
  * @asset(qx/icon/${qx.icontheme}/22/actions/*)
  * @asset(qx/icon/${qx.icontheme}/22/status/*)
  * @asset(qx/icon/${qx.icontheme}/32/mimetypes/*)
+ * @asset(qx/icon/${qx.icontheme}/32/actions/*)
+ * @asset(qx/icon/${qx.icontheme}/64/mimetypes/*)
  */
 qx.Class.define("qooxtunes.Application",
 {
@@ -61,8 +67,11 @@ qx.Class.define("qooxtunes.Application",
       // here's how you force the locale...
       //qx.locale.Manager.getInstance().setLocale("es");
 
+      this.pc_main = new qooxtunes.ui.ctl.playback_control ();
+      this.getRoot().add (this.pc_main, { top: 8, left: 8, right: 8 });
+
       this.tv_main = new qooxtunes.ui.tabview.main ();
-      this.getRoot().add (this.tv_main, { edge : 8 });
+      this.getRoot().add (this.tv_main, { top: 92, left : 8, right: 8, bottom: 8 });
     },
 
     downloading : false,
