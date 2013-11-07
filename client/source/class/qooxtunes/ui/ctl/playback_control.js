@@ -12,6 +12,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
     {
         __player_ids : [],
         __playing : false,
+        __shuffled : false,
+        __repeat : false,
         __current_song_id : null,
         __updating_scrubber : false,
         __mouse_down_in_scrubber : false,
@@ -63,6 +65,16 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             );
         },
 
+        on_btn_repeat_execute : function (e)
+        {
+
+        },
+
+        on_btn_shuffle_execute : function (e)
+        {
+
+        },
+
         on_s_scrubber_changeValue : function (e)
         {
             if (!this.__mouse_down_in_scrubber)
@@ -80,7 +92,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
             var s = position;
 
-            this.__l_time.setValue (this.format_time(h, m, s, 2));
+            this.__l_time.setValue (this.format_time(h, m, s, 3));
         },
 
         on_s_scrubber_mousedown : function (e)
@@ -200,8 +212,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                 ['speed', 'playlistid', 'position', 'percentage', 'time', 'totaltime', 'shuffled', 'repeat' ]],
                 function (result, exc) {
                     // me.__l_time.setValue ()
-                    me.__l_time.setValue (me.format_time (result.time.hours, result.time.minutes, result.time.seconds, 2));
-                    me.__l_total_time.setValue (me.format_time (result.totaltime.hours, result.totaltime.minutes, result.totaltime.seconds, 2));
+                    me.__l_time.setValue (me.format_time (result.time.hours, result.time.minutes, result.time.seconds, 3));
+                    me.__l_total_time.setValue (me.format_time (result.totaltime.hours, result.totaltime.minutes, result.totaltime.seconds, 3));
 
                     if (me.__playing)
                     {
@@ -232,6 +244,49 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
                         me.__s_scrubber.setValue (elapsed_seconds);
                         me.__updating_scrubber = false;
+                    }
+
+                    if (result.shuffled)
+                    {
+                        if (!me.__shuffled)
+                        {
+                            me.__btn_shuffle.setIcon ('qooxtunes/icon/16/shuffle-active.png');
+                            me.__shuffled = true;
+                        }
+                    }
+                    else
+                    {
+                        if (me.__shuffled)
+                        {
+                            me.__btn_shuffle.setIcon ('qooxtunes/icon/16/shuffle.png');
+                            me.__shuffled = false;
+                        }
+                    }
+
+                    // "off", "all", "one"
+                    if (result.repeat == "all")
+                    {
+                        if (me.__repeat != "all")
+                        {
+                            me.__btn_repeat.setIcon ('qooxtunes/icon/16/loop-active-all.png');
+                            me.__repeat = "all";
+                        }
+                    }
+                    else if (result.repeat == "one")
+                    {
+                        if (me.__repeat != "one")
+                        {
+                            me.__btn_repeat.setIcon ('qooxtunes/icon/16/loop-active-one.png');
+                            me.__repeat = "one";
+                        }
+                    }
+                    else
+                    {
+                        if (me.__repeat != "off")
+                        {
+                            me.__btn_repeat.setIcon ('qooxtunes/icon/16/loop.png');
+                            me.__repeat = "off";
+                        }
                     }
 
                     me.reset_timer ();
@@ -415,14 +470,23 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this.__l_artist.setTextAlign ('center');
             this.__cl2.add (this.__l_artist, { top: 26, left: 76, right: 8 });
 
+
+            this.__btn_repeat = new qx.ui.form.Button(null, "qooxtunes/icon/16/loop.png");
+            this.__btn_repeat.setDecorator (null);
+            this.__btn_repeat.addListener("execute", this.on_btn_repeat_execute, this);
+            this.__cl2.add (this.__btn_repeat, { top: 40, left: 76});
+
             this.__l_time = this.build_label ('', 'small', false);
             this.__l_time.setWidth (48);
-            this.__cl2.add (this.__l_time, { top: 40, left: 76 });
+            this.__cl2.add (this.__l_time, { top: 44, left: 112 });
 
             this.__cl2.addListener ('resize', function () {
                 // hack -- really shouldn't access private members like this
-                this.__l_title.setWidth (this.__cl2.__computedLayout.width - 60 - 24);
-                this.__l_artist.setWidth (this.__cl2.__computedLayout.width - 60 - 24);
+                //this.__l_title.setWidth (this.__cl2.__computedLayout.width - 60 - 24 - 24);
+                //this.__l_artist.setWidth (this.__cl2.__computedLayout.width - 60 - 24 - 24);
+                var w = this.__cl2.getBounds().width - 76 - 8;
+                this.__l_title.setWidth (w);
+                this.__l_artist.setWidth (w);
             }, this);
 
             this.__s_scrubber = new qx.ui.form.Slider();
@@ -433,12 +497,17 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this.__s_scrubber.addListener ('mousedown', this.on_s_scrubber_mousedown, this);
             this.__s_scrubber.addListener ('mouseup', this.on_s_scrubber_mouseup, this);
             this.__s_scrubber.addListener ('changeValue', this.on_s_scrubber_changeValue, this);
-            this.__cl2.add (this.__s_scrubber, { top : 42, left : 124, right: 64 });
+            this.__cl2.add (this.__s_scrubber, { top : 45, left : 168, right: 100 });
 
             this.__l_total_time = this.build_label ('', 'small', false);
             this.__l_total_time.setTextAlign ('right');
             this.__l_total_time.setWidth (48);
-            this.__cl2.add (this.__l_total_time, { top: 40, right: 8 });
+            this.__cl2.add (this.__l_total_time, { top: 44, right: 44 });
+
+            this.__btn_shuffle = new qx.ui.form.Button(null, "qooxtunes/icon/16/shuffle.png");
+            this.__btn_shuffle.setDecorator (null);
+            this.__btn_shuffle.addListener("execute", this.on_btn_shuffle_execute, this);
+            this.__cl2.add (this.__btn_shuffle, { top: 40, right: 8});
 
             this.__cl3 = new qx.ui.container.Composite (new qx.ui.layout.Canvas());
             this.__cl3.setWidth (232);

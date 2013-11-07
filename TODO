@@ -5,16 +5,21 @@ BUGS
 - select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't
 appear automatically
 
+- run search, choose type of search (e.g. "Artist"), run new search, the new search
+  will ignore your dropdown selection
+
 
 ------------------------------------------------------------------------------------------
 FEATURES
 ------------------------------------------------------------------------------------------
 
 - music table
+  - ctrl-A for select all!
   - better sorting:
     - make sort by artist sort by artist/album/track number
     - make sort by album sort by album/track number
   - typing jumps you to the first instance of the string in the selected sort column
+  - ignore leading articles like "A", "An", "The"
   - better searching:
      - pick from a list of matching artists, and then do an exact match
        on the artist
