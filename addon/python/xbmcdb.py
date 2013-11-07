@@ -134,7 +134,7 @@ class songdb:
 
             cursor = self.db.cursor ()
 
-            print "[songdb.lookup_m3u_tracks] looking for " + path.encode ('utf-8') + ", " + basename.encode ('utf-8')
+            #print "[songdb.lookup_m3u_tracks] looking for " + path.encode ('utf-8') + ", " + basename.encode ('utf-8')
             cursor.execute ('SELECT idSong, strTitle, strArtists, strAlbum FROM songview WHERE strPath=? AND strFileName=? COLLATE NOCASE', (path, basename))
             rows = cursor.fetchall ()
             for row in rows:

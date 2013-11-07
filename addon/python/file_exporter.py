@@ -48,31 +48,31 @@ class file_exporter:
         self.base_path = ''
         print "  calculating base path..."
         self.get_base_path ()
-        print "  base path : " + self.base_path
+        print "  base path : " + self.base_path.encode('utf-8')
 
         for file in self.files:
-            print "  - exporting file '" + file + "'..."
+            print "  - exporting file '" + file.encode('utf-8') + "'..."
             basename = file.replace (self.base_path, '')
             export_file = os.path.join (export_path, basename)
-            print "    writing to '" + export_file + "'..."
+            print "    writing to '" + export_file.encode('utf-8') + "'..."
 
             (first, last) = os.path.split (export_file)
             try:
-                print "    making dir '" + first + "'..."
-                os.makedirs (first)
+                print "    making dir '" + first.encode('utf-8') + "'..."
+                os.makedirs (first.encode ('utf-8'))
             except OSError as e:
                 #### ignore directory already exists
                 if e.errno == errno.EEXIST:
                     pass
                 else:
-                    self.error_message = "Could not copy '" + file + "' to '" + export_file + "': " + e.strerror
+                    self.error_message = "Could not copy '" + file.encode('utf-8') + "' to '" + export_file.encode('utf-8') + "': " + e.strerror
                     return False
 
             print "    copying file..."
             try:
-                shutil.copy2(file, export_file)
+                shutil.copy2(file.encode ('utf-8'), export_file.encode ('utf-8'))
             except OSError as e:
-                self.error_message = "Could not copy '" + file + "' to '" + export_file + "': " + e.strerror
+                self.error_message = "Could not copy '" + file.encode ('utf-8') + "' to '" + export_file.encode ('utf-8') + "': " + e.strerror
                 return False
 
         return True
