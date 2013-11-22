@@ -12,20 +12,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: qooxtunes/ui/dlg/song_editor.js:65 qooxtunes/ui/dlg/song_editor.js:72
-#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:29
-#: qooxtunes/ui/pnl/playlists.js:216 qooxtunes/ui/pnl/playlists.js:237
-#: qooxtunes/ui/pnl/playlists.js:266 qooxtunes/ui/pnl/playlists.js:287
-#: qooxtunes/ui/pnl/playlists.js:337 qooxtunes/ui/pnl/playlists.js:364
-#: qooxtunes/ui/pnl/playlists.js:435 qooxtunes/ui/pnl/playlists.js:538
-#: qooxtunes/io/remote/xbmc_ext.js:65
+#: qooxtunes/ui/pnl/music_library.js:57 qooxtunes/io/remote/xbmc.js:31
+#: qooxtunes/ui/pnl/playlists.js:218 qooxtunes/ui/pnl/playlists.js:239
+#: qooxtunes/ui/pnl/playlists.js:268 qooxtunes/ui/pnl/playlists.js:289
+#: qooxtunes/ui/pnl/playlists.js:339 qooxtunes/ui/pnl/playlists.js:366
+#: qooxtunes/ui/pnl/playlists.js:437 qooxtunes/ui/pnl/playlists.js:549
+#: qooxtunes/io/remote/xbmc_ext.js:68
 msgid "Error"
 msgstr ""
 
-#: qooxtunes/io/remote/xbmc.js:30 qooxtunes/io/remote/xbmc_ext.js:66
+#: qooxtunes/io/remote/xbmc.js:32 qooxtunes/io/remote/xbmc_ext.js:69
 msgid "Exception during async call: %1"
 msgstr ""
 
-#: qooxtunes/io/remote/xbmc_ext.js:45
+#: qooxtunes/io/remote/xbmc_ext.js:48
 msgid "[xbmc_ext.find_port] port = %1"
 msgstr ""
 
@@ -35,117 +35,129 @@ msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:625
 #: qooxtunes/ui/dlg/multi_song_editor.js:488
-#: qooxtunes/ui/ctl/table/songs.js:89
+#: qooxtunes/ui/ctl/table/songs.js:93
 msgid "Track #"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:549
 #: qooxtunes/ui/dlg/multi_song_editor.js:394
-#: qooxtunes/ui/ctl/table/songs.js:90 qooxtunes/ui/ctl/table/songs.js:98
+#: qooxtunes/ui/ctl/table/songs.js:94 qooxtunes/ui/ctl/table/songs.js:106
 msgid "Name"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:559
 #: qooxtunes/ui/dlg/multi_song_editor.js:406
-#: qooxtunes/ui/ctl/table/songs.js:91 qooxtunes/ui/ctl/table/songs.js:99
+#: qooxtunes/ui/ctl/table/songs.js:95 qooxtunes/ui/ctl/table/songs.js:107
 #: qooxtunes/ui/tabview/page/music.js:162
 msgid "Artist"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:588
 #: qooxtunes/ui/dlg/multi_song_editor.js:443
-#: qooxtunes/ui/ctl/table/songs.js:92 qooxtunes/ui/ctl/table/songs.js:100
+#: qooxtunes/ui/ctl/table/songs.js:96 qooxtunes/ui/ctl/table/songs.js:108
 #: qooxtunes/ui/tabview/page/music.js:167
 msgid "Album"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:609
 #: qooxtunes/ui/dlg/multi_song_editor.js:469
-#: qooxtunes/ui/ctl/table/songs.js:101 qooxtunes/ui/tabview/page/music.js:172
+#: qooxtunes/ui/ctl/table/songs.js:109 qooxtunes/ui/tabview/page/music.js:172
 msgid "Genre"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:562
 #: qooxtunes/ui/dlg/multi_song_editor.js:409
-#: qooxtunes/ui/ctl/table/songs.js:102
+#: qooxtunes/ui/ctl/table/songs.js:110
 msgid "Year"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:103
+#: qooxtunes/ui/ctl/table/songs.js:111
 msgid "Track"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:104
+#: qooxtunes/ui/ctl/table/songs.js:112
 msgid "Duration"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:105
+#: qooxtunes/ui/ctl/table/songs.js:113
 msgid "Playcount"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:619
 #: qooxtunes/ui/dlg/multi_song_editor.js:482
-#: qooxtunes/ui/ctl/table/songs.js:106
+#: qooxtunes/ui/ctl/table/songs.js:114
 msgid "Rating"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:107
+#: qooxtunes/ui/ctl/table/songs.js:115
 msgid "Comment"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:145
+#: qooxtunes/ui/ctl/table/songs.js:248
 msgid "Loading XBMC library..."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:183
+#: qooxtunes/ui/ctl/table/songs.js:284
 msgid "Loading playlist %1"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:531
+#: qooxtunes/ui/ctl/table/songs.js:803
 msgid "Exporting..."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:541
+#: qooxtunes/ui/ctl/table/songs.js:813
 msgid "Error exporting to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:541 qooxtunes/ui/ctl/table/songs.js:553
+#: qooxtunes/ui/ctl/table/songs.js:813 qooxtunes/ui/ctl/table/songs.js:825
 msgid "Export"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:547
+#: qooxtunes/ui/ctl/table/songs.js:819
 msgid "Successfully exported song to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:551
+#: qooxtunes/ui/ctl/table/songs.js:823
 msgid "Successfully exported songs to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:568 qooxtunes/ui/ctl/table/songs.js:577
+#: qooxtunes/ui/ctl/table/songs.js:842 qooxtunes/ui/ctl/table/songs.js:853
 msgid "Export song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:569 qooxtunes/ui/ctl/table/songs.js:576
+#: qooxtunes/ui/ctl/table/songs.js:843 qooxtunes/ui/ctl/table/songs.js:852
 msgid "Download song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:584
+#: qooxtunes/ui/ctl/table/songs.js:862
 msgid "Export songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:585
+#: qooxtunes/ui/ctl/table/songs.js:863
 msgid "Download songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:717
+#: qooxtunes/ui/ctl/table/songs.js:998
+msgid "Select All"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:1008
+msgid "Play"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:1014
+msgid "Queue"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:1022
 msgid "Edit Info"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:723
+#: qooxtunes/ui/ctl/table/songs.js:1030
 msgid "Export Song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:729
+#: qooxtunes/ui/ctl/table/songs.js:1036
 msgid "Download Song"
 msgstr ""
 
@@ -230,7 +242,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: qooxtunes/ui/pnl/music_library.js:58 qooxtunes/ui/pnl/playlists.js:288
+#: qooxtunes/ui/pnl/music_library.js:58 qooxtunes/ui/pnl/playlists.js:290
 msgid "Could not save playlist."
 msgstr ""
 
@@ -238,75 +250,95 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:165 qooxtunes/ui/tabview/page/music.js:126
+#: qooxtunes/ui/pnl/playlists.js:167 qooxtunes/ui/tabview/page/music.js:126
 msgid "Playlists"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:178
+#: qooxtunes/ui/pnl/playlists.js:180
 msgid "Loading playlists..."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:212
+#: qooxtunes/ui/pnl/playlists.js:214
 msgid "Enter the name of the new folder:"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:217
+#: qooxtunes/ui/pnl/playlists.js:219
 msgid "Folder name must contain one or more characters."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:238
+#: qooxtunes/ui/pnl/playlists.js:240
 msgid "Could not create folder."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:261
+#: qooxtunes/ui/pnl/playlists.js:263
 msgid "Enter the name of the new playlist:"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:267 qooxtunes/ui/pnl/playlists.js:338
+#: qooxtunes/ui/pnl/playlists.js:269 qooxtunes/ui/pnl/playlists.js:340
 msgid "Playlist name must contain one or more characters."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:331
+#: qooxtunes/ui/pnl/playlists.js:333
 msgid "Enter the new name of the %1:"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:365
+#: qooxtunes/ui/pnl/playlists.js:367
 msgid "Could not rename %1."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:422
+#: qooxtunes/ui/pnl/playlists.js:424
 msgid "Delete %1 \"%2\".  Are you sure?"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:436
+#: qooxtunes/ui/pnl/playlists.js:438
 msgid "Could not delete %1."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:539
+#: qooxtunes/ui/pnl/playlists.js:494
+msgid "Add track to playlist '%1'?"
+msgstr ""
+
+#: qooxtunes/ui/pnl/playlists.js:495
+msgid "Add %1 tracks to playlist '%2'?"
+msgstr ""
+
+#: qooxtunes/ui/pnl/playlists.js:498
+msgid "Added track to playlist '%1'."
+msgstr ""
+
+#: qooxtunes/ui/pnl/playlists.js:499
+msgid "Added %1 tracks to playlist '%2'."
+msgstr ""
+
+#: qooxtunes/ui/pnl/playlists.js:505
+msgid "Success"
+msgstr ""
+
+#: qooxtunes/ui/pnl/playlists.js:550
 msgid "Could not move %1."
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:582
+#: qooxtunes/ui/pnl/playlists.js:683
 msgid "Playlist"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:583
+#: qooxtunes/ui/pnl/playlists.js:684
 msgid "Folder"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:593
+#: qooxtunes/ui/pnl/playlists.js:695
 msgid "Add new playlist or folder"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:600
+#: qooxtunes/ui/pnl/playlists.js:703
 msgid "Edit name of selected playlist or folder"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:606
+#: qooxtunes/ui/pnl/playlists.js:710
 msgid "Delete selected playlist or folder"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:627
+#: qooxtunes/ui/pnl/playlists.js:731
 msgid "Add to..."
 msgstr ""
 
@@ -339,9 +371,3 @@ msgstr ""
 #: qooxtunes/ui/tabview/page/video.js:7
 msgid "Video"
 msgstr ""
-
-#~ msgid "Download File"
-#~ msgstr ""
-
-#~ msgid "Export File"
-#~ msgstr ""

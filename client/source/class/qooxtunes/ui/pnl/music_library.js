@@ -51,7 +51,7 @@ qx.Class.define("qooxtunes.ui.pnl.music_library",
                 var me = this;
                 rpc.callAsync ('save_playlist_tracks',
                     [ 'music', this.__l_playlist.get_playlist (), songids ],
-                    function (result, exc) {
+                    function (result) {
                         if (!result)
                         {
                             qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),

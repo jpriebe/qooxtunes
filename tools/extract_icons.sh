@@ -57,3 +57,10 @@ mv folder-open-alt.png ../client/source/resource/qooxtunes/icon/16
 mv list.png ../client/source/resource/qooxtunes/icon/16
 ./font-awesome-to-png.py --color '#666666' --size 16 --fontsize 14 list-ul
 mv list-ul.png ../client/source/resource/qooxtunes/icon/16
+
+./font-awesome-to-png.py --color '#666666' --size 24 plus
+mv plus.png ../client/source/resource/qooxtunes/icon/24
+./font-awesome-to-png.py --color '#666666' --size 24 edit
+mv edit.png ../client/source/resource/qooxtunes/icon/24
+./font-awesome-to-png.py --color '#666666' --size 24 remove
+mv remove.png ../client/source/resource/qooxtunes/icon/24

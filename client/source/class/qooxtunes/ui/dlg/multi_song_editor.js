@@ -167,7 +167,7 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
                         { 'start' : 0 },
                         { 'order' : 'ascending', 'method' : 'label' }
                     ],
-                    function (result, exc) {
+                    function (result) {
                         me.__c_genre.removeAll ();
                         for (var i = 0; i < result.genres.length; i++)
                         {
@@ -327,7 +327,7 @@ qx.Class.define("qooxtunes.ui.dlg.multi_song_editor",
                 var rpc = qooxtunes.io.remote.xbmc.getInstance ();
                 rpc.callAsync ('AudioLibrary.SetSongDetails',
                     this.__save_fields,
-                    function (result, exc) {
+                    function (result) {
                         me.__curr_save_idx++;
 
                         if (me.__curr_save_idx > me.__song_ids.length - 1)

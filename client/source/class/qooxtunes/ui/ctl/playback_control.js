@@ -28,7 +28,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             var me = this;
             var player_id = this.__player_ids[0].playerid;
             this._rpc.callAsync("Player.GoTo", [player_id, "previous"],
-                function (result, exc) {
+                function (result) {
                     me.update_player ();
                 });
         },
@@ -43,7 +43,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             var me = this;
             var player_id = this.__player_ids[0].playerid;
             this._rpc.callAsync("Player.GoTo", [player_id, "next"],
-                function (result, exc) {
+                function (result) {
                     me.update_player ();
                 });
         },
@@ -59,7 +59,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             var player_id = this.__player_ids[0].playerid;
             var me = this;
             this._rpc.callAsync("Player.PlayPause", [player_id],
-                function (result, exc) {
+                function (result) {
                     me.update_player();
                 }
             );
@@ -67,12 +67,22 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
         on_btn_repeat_execute : function (e)
         {
-
+            var me = this;
+            var player_id = this.__player_ids[0].playerid;
+            this._rpc.callAsync("Player.SetRepeat", [player_id, "cycle"],
+                function (result) {
+                    me.update_player ();
+                });
         },
 
         on_btn_shuffle_execute : function (e)
         {
-
+            var me = this;
+            var player_id = this.__player_ids[0].playerid;
+            this._rpc.callAsync("Player.SetShuffle", [player_id, "toggle"],
+                function (result) {
+                    me.update_player ();
+                });
         },
 
         on_s_scrubber_changeValue : function (e)
@@ -116,7 +126,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             var player_id = this.__player_ids[0].playerid;
             var me = this;
             this._rpc.callAsync("Player.Seek", [player_id, perc],
-                function (result, exc) {
+                function (result) {
                     me.update_player();
                 });
         },
@@ -178,7 +188,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                         [this.__current_song_id,
                             ['title', 'albumartist', 'album', 'thumbnail', 'duration']
                         ],
-                        function (result, exc) {
+                        function (result) {
                             var sd = result.songdetails;
 
                             if (need_text_update)
@@ -210,7 +220,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this._rpc.callAsync ('Player.GetProperties',
                 [player_id,
                 ['speed', 'playlistid', 'position', 'percentage', 'time', 'totaltime', 'shuffled', 'repeat' ]],
-                function (result, exc) {
+                function (result) {
                     // me.__l_time.setValue ()
                     me.__l_time.setValue (me.format_time (result.time.hours, result.time.minutes, result.time.seconds, 3));
                     me.__l_total_time.setValue (me.format_time (result.totaltime.hours, result.totaltime.minutes, result.totaltime.seconds, 3));
@@ -307,7 +317,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             var me = this;
             var player_id = this.__player_ids[0].playerid;
             this._rpc.callAsync("Player.GetItem", [player_id],
-                function (result, exc) {
+                function (result) {
                     if (typeof result.item === 'undefined')
                     {
                         this.reset_timer ();
@@ -327,7 +337,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         {
             var me = this;
             this._rpc.callAsync("Player.GetActivePlayers", [],
-                function (result, exc) {
+                function (result) {
                     me.__player_ids = result;
                     me.update_player_item ();
                 });

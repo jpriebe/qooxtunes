@@ -25,6 +25,9 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
     members :
     {
+        __rpc : null,
+        __rpc_ext : null,
+
         __limited_columns : false,
 
         __search_expression : '',
@@ -83,6 +86,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
         {
             this.__tm = new smart.model.Default();
 
+            var col_name, col_artist, col_album, col_track;
             if (this.__limited_columns)
             {
                 this.__tm.setColumns([ "_SongID", "_SearchValue",
@@ -91,6 +95,10 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     this.tr ("Artist"),
                     this.tr ("Album")],
                     ['songid', 'search_value', 'track_num', 'title', 'artist', 'album']);
+                col_name = 3;
+                col_artist = 4;
+                col_album = 5;
+                col_track = 2;
             }
             else
             {
@@ -107,7 +115,104 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     this.tr ("Comment")],
                     ['songid', 'search_value', 'title', 'artist', 'album', 'genre',
                         'year', 'track', 'duration', 'playcount', 'rating', 'comment']);
+
+                col_name = 2;
+                col_artist = 3;
+                col_album = 4;
+                col_track = 7;
             }
+
+            // sort song titles, ignoring leading articles
+            this.__tm.setSortMethods(col_name, {
+                ascending  : function(row1, row2) {
+                    var v1 = row1[col_name].replace (/^(a|an|the)\s+/i, '');
+                    var v2 = row2[col_name].replace (/^(a|an|the)\s+/i, '');
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                },
+                descending  : function(row1, row2) {
+                    var v2 = row1[col_name].replace (/^(a|an|the)\s+/i, '');
+                    var v1 = row2[col_name].replace (/^(a|an|the)\s+/i, '');
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                }
+            });
+
+            // sort artists with a subsort of album and track number (with songid as fallback)
+            this.__tm.setSortMethods(col_artist, {
+                ascending  : function(row1, row2) {
+                    var v1 = row1[col_artist].replace (/^(a|an|the)\s+/i, '');
+                    var v2 = row2[col_artist].replace (/^(a|an|the)\s+/i, '');
+                    if (v1 == v2)
+                    {
+                        v1 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
+                        v2 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
+                        if (v1 == v2)
+                        {
+                            v1 = parseInt (row1[col_track]);
+                            v2 = parseInt (row2[col_track]);
+                            if (v1 == v2)
+                            {
+                                v1 = parseInt (row1[0]);
+                                v2 = parseInt (row2[0]);
+                            }
+                        }
+                    }
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                },
+                descending  : function(row1, row2) {
+                    var v2 = row1[col_artist].replace (/^(a|an|the)\s+/i, '');
+                    var v1 = row2[col_artist].replace (/^(a|an|the)\s+/i, '');
+                    if (v1 == v2)
+                    {
+                        v2 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
+                        v1 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
+                        if (v1 == v2)
+                        {
+                            v2 = parseInt (row1[col_track]);
+                            v1 = parseInt (row2[col_track]);
+                            if (v1 == v2)
+                            {
+                                v2 = parseInt (row1[0]);
+                                v1 = parseInt (row2[0]);
+                            }
+                        }
+                    }
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                }
+            });
+
+            // sort albums with a subsort of track number (with songid as fallback)
+            this.__tm.setSortMethods(col_album, {
+                ascending  : function(row1, row2) {
+                    var v1 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
+                    var v2 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
+                    if (v1 == v2)
+                    {
+                        v1 = parseInt (row1[col_track]);
+                        v2 = parseInt (row2[col_track]);
+                        if (v1 == v2)
+                        {
+                            v1 = parseInt (row1[0]);
+                            v2 = parseInt (row2[0]);
+                        }
+                    }
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                },
+                descending  : function(row1, row2) {
+                    var v2 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
+                    var v1 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
+                    if (v1 == v2)
+                    {
+                        v2 = parseInt (row1[col_track]);
+                        v1 = parseInt (row2[col_track]);
+                        if (v1 == v2)
+                        {
+                            v2 = parseInt (row1[0]);
+                            v1 = parseInt (row2[0]);
+                        }
+                    }
+                    return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
+                }
+            });
 
             this.__tm.addIndex (0);
 
@@ -140,15 +245,13 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
         {
             var me = this;
 
-            var rpc = qooxtunes.io.remote.xbmc.getInstance ();
-
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Loading XBMC library..."));
-            rpc.callAsync("AudioLibrary.GetSongs", [
+            this.__rpc.callAsync("AudioLibrary.GetSongs", [
                 ['title', 'artist', 'album', 'genre', 'year', 'track', 'duration', 'playcount', 'rating', 'comment'],
                 { 'start' : 0 },
                 { 'order': 'ascending', 'method': 'artist', 'ignorearticle': true }
             ],
-                function (result, exc) {
+                function (result) {
                     var rowData = [];
                     for (var i = 0; i < result.songs.length; i++)
                     {
@@ -176,13 +279,11 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         load_playlist : function (playlist)
         {
-            var rpc_ext = qooxtunes.io.remote.xbmc_ext.getInstance ();
-
             var me = this;
 
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Loading playlist %1", playlist.name));
-            rpc_ext.callAsync("get_playlist_tracks", ['music', playlist],
-                function (result, exc) {
+            this.__rpc_ext.callAsync("get_playlist_tracks", ['music', playlist],
+                function (result) {
                     var rowData = [];
                     for (var i = 0; i < result.length; i++)
                     {
@@ -221,7 +322,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             this.__tm.setData ([]);
         },
 
-        on_drag_start: function(e) {
+        on_dragstart: function(e) {
             e.addAction("copy");
         },
 
@@ -426,6 +527,181 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             return nav_result;
         },
 
+        on_cmd_select_all : function (e)
+        {
+            var num_rows = this.__tm.getRowCount ();
+            var m = this.getSelectionModel ();
+            m.setSelectionInterval (0, num_rows - 1);
+        },
+
+        playlist_action : function (onsuccess, onfailure)
+        {
+            this.__rpc.callAsync("Playlist.GetPlaylists", [],
+                function (result) {
+                    playlist_id = -1;
+                    for (var i = 0; i < result.length; i++)
+                    {
+                        if (result[i].type == 'audio')
+                        {
+                            playlist_id = result[i].playlistid;
+                            break;
+                        }
+                    }
+
+                    if (playlist_id != -1)
+                    {
+                        onsuccess (playlist_id);
+                    }
+                }
+            );
+        },
+
+        queue_next_item : function (playlist_id)
+        {
+            if (this.__play_queue.length == 0)
+            {
+                this.__rpc.callAsync ("Player.Open", [ { playlistid: playlist_id }],
+                    function (result) {
+                    }
+                );
+                return;
+            }
+
+            var song_id = this.__play_queue.shift ();
+
+            var me = this;
+            this.__rpc.callAsync ("Playlist.Add", [playlist_id, { songid: song_id }],
+                function (result) {
+                    me.queue_next_item (playlist_id);
+                }
+            );
+        },
+
+        build_play_queue : function ()
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length < 1)
+            {
+                return;
+            }
+
+            this.__play_queue = [];
+
+            if (sel_items.length > 1)
+            {
+                for (var i = 0; i < sel_items.length; i++)
+                {
+                    this.__play_queue.push (sel_items[i][0]);
+                }
+                return;
+            }
+
+            var sel_indices = this.get_selected_indices ();
+
+            var start_idx = sel_indices[0];
+            var max_idx = start_idx + 300;
+
+            var num_rows = this.__tm.getRowCount ();
+            if (max_idx > num_rows)
+            {
+                max_idx = num_rows;
+            }
+
+            for (var i = start_idx; i < max_idx; i++)
+            {
+                this.__play_queue.push (this.__tm.getRowData (i)[0]);
+            }
+
+
+        },
+
+
+
+        play_selected : function (playlist_id)
+        {
+            this.build_play_queue ();
+
+            if (this.__play_queue.length == 0)
+            {
+                return;
+            }
+
+            var me = this;
+
+            me.__rpc.callAsync ("Playlist.Clear", [playlist_id],
+                function (result) {
+                    me.queue_next_item (playlist_id);
+                }
+            );
+        },
+
+
+        queue_selected : function (playlist_id)
+        {
+            this.build_play_queue ();
+
+            if (this.__play_queue.length == 0)
+            {
+                return;
+            }
+
+            this.queue_next_item (playlist_id);
+        },
+
+
+        on_cmd_play : function (e)
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length < 1)
+            {
+                return;
+            }
+
+            var me = this;
+
+            // QUESTION - do I need to check the ID of the audio playlist every time I want to
+            // act on it, or will it stay constant throughout the app?
+            this.playlist_action(
+                function (playlist_id)
+                {
+                    // success
+                    me.play_selected (playlist_id);
+                },
+                function ()
+                {
+                    // fail
+                }
+            );
+        },
+
+        on_cmd_queue : function (e)
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length < 1)
+            {
+                return;
+            }
+
+            var me = this;
+
+            // QUESTION - do I need to check the ID of the audio playlist every time I want to
+            // act on it, or will it stay constant throughout the app?
+            this.playlist_action(
+                function (playlist_id)
+                {
+                    // success
+                    me.queue_selected (playlist_id);
+                },
+                function ()
+                {
+                    // fail
+                }
+            );
+        },
+
         on_cmd_edit : function (e)
         {
             var sel_items = this.get_selected_items ();
@@ -492,14 +768,12 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 ids.push (sel_items[i][0]);
             }
 
-            var rpc = qooxtunes.io.remote.xbmc_ext.getInstance ();
-
-            rpc.callAsync("get_download_songs_url", [
+            var host = this.__rpc_ext.get_hostname ();
+            var port = this.__rpc_ext.get_port ();
+            this.__rpc_ext.callAsync("get_download_songs_url", [
                 ids
             ],
-                function (result, exc) {
-                    var host = rpc.get_hostname ();
-                    var port = rpc.get_port ();
+                function (result) {
                     var path = result;
 
                     var url = '//' + host + ":" + port + path;
@@ -526,15 +800,13 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 ids.push (sel_items[i][0]);
             }
 
-            var rpc = qooxtunes.io.remote.xbmc_ext.getInstance ();
-
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Exporting..."));
 
             var me = this;
-            rpc.callAsync("export_songs", [
+            this.__rpc_ext.callAsync("export_songs", [
                 ids
             ],
-                function (result, exc) {
+                function (result) {
                     qooxtunes.ui.dlg.wait_popup.hide ();
 
                     if (result == false) {
@@ -562,6 +834,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             if (num_selected == 0)
             {
+                this.__btn_play.setEnabled (false);
+                this.__btn_queue.setEnabled (false);
                 this.__btn_edit.setEnabled (false);
                 this.__btn_export.setEnabled (false);
                 this.__btn_download.setEnabled (false);
@@ -570,6 +844,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             }
             else if (num_selected == 1)
             {
+                this.__btn_play.setEnabled (true);
+                this.__btn_queue.setEnabled (true);
                 this.__btn_edit.setEnabled (true);
                 this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
@@ -578,6 +854,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             }
             else
             {
+                this.__btn_play.setEnabled (true);
+                this.__btn_queue.setEnabled (true);
                 this.__btn_edit.setEnabled (true);
                 this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
@@ -685,6 +963,9 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         init : function ()
         {
+            this.__rpc = qooxtunes.io.remote.xbmc.getInstance ();
+            this.__rpc_ext = qooxtunes.io.remote.xbmc_ext.getInstance ();
+
             var sm = this.getSelectionModel();
 
             sm.setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
@@ -707,15 +988,41 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             }
 
             this.addListener("columnVisibilityMenuCreateEnd", this.on_columnVisibilityMenuCreateEnd, this);
-            this.addListener("dragstart", this.on_drag_start, this);
+            this.addListener("dragstart", this.on_dragstart, this);
 
             this.__cm_songs = new qx.ui.menu.Menu ();
+
+            this.__cmd_select_all = new qx.ui.core.Command("Ctrl+A");
+            this.__cmd_select_all.addListener("execute", this.on_cmd_select_all, this);
+
+            this.__btn_select_all = new qx.ui.menu.Button(this.tr ("Select All"), "", this.__cmd_select_all);
+            this.__cm_songs.add (this.__btn_select_all);
+
+            this.__cm_songs.add (new qx.ui.menu.Separator ());
+
+            this.__cmd_play = new qx.ui.core.Command("Ctrl+P");
+            this.__cmd_play.addListener("execute", this.on_cmd_play, this);
+
+            this.addListener ('dblclick', this.on_cmd_play, this);
+
+            this.__btn_play = new qx.ui.menu.Button(this.tr ("Play"), "", this.__cmd_play);
+            this.__cm_songs.add (this.__btn_play);
+
+            this.__cmd_queue = new qx.ui.core.Command("Ctrl+Q");
+            this.__cmd_queue.addListener("execute", this.on_cmd_queue, this);
+
+            this.__btn_queue = new qx.ui.menu.Button(this.tr ("Queue"), "", this.__cmd_queue);
+            this.__cm_songs.add (this.__btn_queue);
+
+            this.__cm_songs.add (new qx.ui.menu.Separator ());
 
             this.__cmd_edit = new qx.ui.core.Command("Ctrl+I");
             this.__cmd_edit.addListener("execute", this.on_cmd_edit, this);
 
             this.__btn_edit = new qx.ui.menu.Button(this.tr ("Edit Info"), "", this.__cmd_edit);
             this.__cm_songs.add (this.__btn_edit);
+
+            this.__cm_songs.add (new qx.ui.menu.Separator ());
 
             this.__cmd_export = new qx.ui.core.Command("Ctrl+E");
             this.__cmd_export.addListener("execute", this.on_cmd_export, this);

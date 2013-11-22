@@ -216,7 +216,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                     { 'start' : 0 },
                     { 'order' : 'ascending', 'method' : 'label' }
                 ],
-                function (result, exc) {
+                function (result) {
                     me.__cb_genre.removeAll ();
                     for (var i = 0; i < result.genres.length; i++)
                     {
@@ -251,7 +251,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                         'fanart', 'thumbnail', 'file', 'albumid', 'lastplayed',
                         'disc', 'genreid', 'artistid', 'displayartist', 'albumartistid']
                     ],
-                function (result, exc) {
+                function (result) {
 
                     var songdetails = result.songdetails;
 
@@ -382,7 +382,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
             var me = this;
             rpc.callAsync ('AudioLibrary.SetSongDetails',
                 params,
-                function (result, exc) {
+                function (result) {
                     callback ();
                 });
         },

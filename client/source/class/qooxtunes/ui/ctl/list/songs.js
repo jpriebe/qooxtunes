@@ -35,7 +35,7 @@ qx.Class.define("qooxtunes.ui.ctl.list.songs",
 
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Loading playlist %1...",  name));
             rpc_ext.callAsync("get_playlist_tracks", ['music', this.__playlist],
-                function (result, exc) {
+                function (result) {
                     me.removeAll ();
                     for (var i = 0; i < result.length; i++)
                     {
@@ -162,5 +162,7 @@ qx.Class.define("qooxtunes.ui.ctl.list.songs",
                 this.reorder_list(this.__current_list_item);
             }, this);
         }
+
+
     }
 });

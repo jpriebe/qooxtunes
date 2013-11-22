@@ -72,7 +72,7 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
 
                     if (typeof self === "undefined")
                     {
-                        handler (result, exc);
+                        handler (result);
                     }
                     else
                     {

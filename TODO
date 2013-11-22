@@ -8,30 +8,31 @@ appear automatically
 - run search, choose type of search (e.g. "Artist"), run new search, the new search
   will ignore your dropdown selection
 
+- can't move a playlist to a folder that is scrolled offscreen
 
 ------------------------------------------------------------------------------------------
 FEATURES
 ------------------------------------------------------------------------------------------
 
 - music table
-  - ctrl-A for select all!
-  - better sorting:
-    - make sort by artist sort by artist/album/track number
-    - make sort by album sort by album/track number
   - typing jumps you to the first instance of the string in the selected sort column
-  - ignore leading articles like "A", "An", "The"
-  - better searching:
-     - pick from a list of matching artists, and then do an exact match
-       on the artist
-     - use quotes, booleans
+  - better searching, a la itunes:
+     - show matching artists, albums, and songs
+     - allow user to pick a specific artist, album, or song, OR just run the search
+     - use quotes, booleans ?
 
 - song editor:
-  - multiple artists, album artists, genres
+  - multiple artists, album artists, genres for a single song
   - clear fields before opening so there are no weird artifacts
   - display detailed file info (file size, bitrate, sample rate, format, etc); how to get?
 
 - playlist tree:
   - right-click menu
+  - allow user to move a playlist to an arbitrary folder
+
+- playlist table:
+  - allow user to reorder songs (could be tricky b/c of sort order)
+  - allow user to delete a song
 
 - playlist building:
   - display number of songs, total duration
@@ -39,8 +40,7 @@ FEATURES
   - prettier layout in list box
   - cancel button
 
-- general
-  - i18n for UI (how to get language prefs from server?)
+- some way to update XBMC library
 
 - addon web service
   - reliably pass the port number down to the client software
@@ -54,5 +54,7 @@ FEATURES
       client code
     - need to get XBMC version number and figure out what the database 
       file numbers are along with the schema
+
+- escape key to close dialogs
 
 - dark theme?

@@ -179,7 +179,7 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
 
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Loading playlists..."));
             rpc_ext.callAsync("get_playlists", ['music'],
-                function (result, exc) {
+                function (result) {
                     me.load_playlists (result);
                     qooxtunes.ui.dlg.wait_popup.hide ();
                 }
@@ -233,7 +233,7 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
 
                 rpc.callAsync ('create_playlist_folder',
                     [ 'music', { name: folder_name, path: path_components } ],
-                    function (result, exc) {
+                    function (result) {
                         if (!result)
                         {
                             qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
@@ -283,7 +283,7 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
 
                 rpc.callAsync ('create_playlist',
                     [ 'music', { name: playlist_name, path: path_components } ],
-                    function (result, exc) {
+                    function (result) {
                         if (!result)
                         {
                             qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
@@ -360,7 +360,7 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
 
                 rpc.callAsync ('rename_playlist_or_folder',
                     [ 'music', old_path_components, new_path_components ],
-                    function (result, exc) {
+                    function (result) {
                         if (!result)
                         {
                             qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
@@ -431,7 +431,7 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
                 }
 
                 rpc_ext.callAsync(method, ['music', path_components],
-                    function (result, exc) {
+                    function (result) {
                         if (!result)
                         {
                             qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
@@ -456,40 +456,180 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
             }
         },
 
+
+        drop_tracks : function (e)
+        {
+            var data = e.getData ('qx/tracks');
+
+            var orig = e.getOriginalTarget();
+            if (orig.classname !== "qx.ui.tree.TreeFile") {
+                return;
+            }
+
+            var playlist = {
+                name: orig.getLabel (),
+                path: this.get_path_components (orig)
+            };
+
+
+            var tracks = [];
+
+            var rpc_ext = qooxtunes.io.remote.xbmc_ext.getInstance ();
+            var me = this;
+            rpc_ext.callAsync ('get_playlist_tracks',
+                [ 'music', playlist ],
+
+                function (result) {
+                    for (var i = 0; i < result.length; i++)
+                    {
+                        tracks.push (result[i].id)
+                    }
+
+                    for (var i = 0; i < data.length; i++)
+                    {
+                        tracks.push (data[i][0]);
+                    }
+
+                    var msg1 = (data.length == 1)
+                        ? me.tr ("Add track to playlist '%1'?", playlist.name)
+                        : me.tr ("Add %1 tracks to playlist '%2'?", data.length, playlist.name);
+
+                    var msg2 = (data.length == 1)
+                        ? me.tr ("Added track to playlist '%1'.", playlist.name)
+                        : me.tr ("Added %1 tracks to playlist '%2'.", data.length, playlist.name);
+
+                    qooxtunes.ui.dlg.yes_no.go (msg1, function () {
+                            rpc_ext.callAsync ('save_playlist_tracks',
+                                [ 'music', playlist, tracks ],
+                                function (result) {
+                                    qooxtunes.ui.dlg.msgbox.go (me.tr ("Success"), msg2);
+                                }
+                            );
+                        }
+                    )
+
+                }
+            );
+        },
+
+        drop_tree_item : function (e)
+        {
+            var orig = e.getOriginalTarget();
+
+            var tf_target = this.get_tree_folder(orig);
+            var tf_source = e.getData("qx/tree-items")[0];
+
+            if (!tf_target) {
+                return;
+            }
+
+            if (tf_source !== tf_target.getParent()) {
+                var path_source = this.get_path_components (tf_source);
+                var path_target = this.get_path_components (tf_target);
+
+                var old_path_components = [];
+                var new_path_components = [];
+                for (var i = 0; i < path_source.length; i++)
+                {
+                    old_path_components.push (path_source[i]);
+                }
+                for (var i = 0; i < path_target.length; i++)
+                {
+                    new_path_components.push (path_target[i]);
+                }
+                new_path_components.push (path_source[path_source.length - 1]);
+
+                // now rename the object
+                var rpc = qooxtunes.io.remote.xbmc_ext.getInstance ();
+                rpc.callAsync ('rename_playlist_or_folder',
+                    [ 'music', old_path_components, new_path_components ],
+                    function (result) {
+                        if (!result)
+                        {
+                            qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
+                                this.tr ("Could not move %1.", path_source[path_source.length - 1]));
+                            return;
+                        }
+
+                        tf_source.getParent().remove (tf_source);
+                        tf_target.add (tf_source);
+                    });
+            }
+        },
+
         init_drag_and_drop : function ()
         {
+            this.__drag_indicator = new qx.ui.core.Widget;
+            this.__drag_indicator.setDecorator(new qx.ui.decoration.Single().set({
+                top : [ 1, "solid", "#33508D" ]}));
+
+            this.__drag_indicator.setHeight(0);
+            this.__drag_indicator.setOpacity(0.5);
+            this.__drag_indicator.setLayoutProperties({left: -1000, top: -1000});
+            qx.core.Init.getApplication().getRoot().add(this.__drag_indicator);
+
             this.__t_playlists.setDraggable(true);
             this.__t_playlists.setDroppable(true);
 
             this.__t_playlists.addListener("dragstart", function(e) {
+                console.log ('[t_playlists] dragstart');
                 e.addAction("move");
                 e.addType("qx/tree-items");
             });
 
             this.__t_playlists.addListener("droprequest", function(e)
             {
+                console.log ('[t_playlists] droprequest');
                 var type = e.getCurrentType();
                 var treeFolder = this.getSelection();
                 e.addData(type, treeFolder);
             });
 
+
+            this.__t_playlist.setDraggable(true);
+            this.__t_playlist.setDroppable(false);
+
+            this.__t_playlist.addListener("dragstart", function(e) {
+                console.log ('[t_playlist] dragstart');
+                e.addAction ("copy");
+                e.addType ("qx/tracks");
+            });
+
+            this.__t_playlist.addListener("droprequest", function(e)
+            {
+                console.log ('[t_playlist] droprequest');
+                var type = e.getCurrentType();
+                var sel_tracks = this.get_selected_items();
+                e.addData(type, sel_tracks);
+            });
+
             this.__t_playlists.addListener("dragend", function(e)
             {
+                console.log ('[t_playlists] dragend');
                 this.setDomPosition(-1000, -1000);
             }, this.__drag_indicator);
 
             this.__t_playlists.addListener("drag", function(e)
             {
+                console.log ('[t_playlists] drag');
+
                 var orig = e.getOriginalTarget();
 
-                if (!qx.ui.core.Widget.contains( this.__t_playlists, orig)) {
+                if (qx.ui.core.Widget.contains( this.__t_playlists, orig))
+                {
+                    var tf = this.get_tree_folder(orig);
+                    if (!tf) {
+                        return;
+                    }
+                }
+                else if (qx.ui.core.Widget.contains( this.__t_playlist, orig))
+                {
+                }
+                else
+                {
                     return;
                 }
 
-                var tf = this.get_tree_folder(orig);
-                if (!tf) {
-                    return;
-                }
 
                 var orig_coords = tf.getContainerLocation();
                 this.__drag_indicator.setWidth(tf.getBounds().width);
@@ -498,54 +638,21 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
 
             this.__t_playlists.addListener("dragover", function(e)
             {
-                if (e.getRelatedTarget()) {
-                    e.preventDefault();
-                }
+                // no dragover event listener required; we will accept drags from either
+                // ourself or from the table
             });
 
             this.__t_playlists.addListener("drop", function(e)
             {
-                var orig = e.getOriginalTarget();
+                console.log ('[t_playlists] drop');
 
-                var tf_target = this.get_tree_folder(orig);
-                var tf_source = e.getData("qx/tree-items")[0];
-
-                if (!tf_target) {
-                    return;
+                if (e.supportsType ("qx/tree-items"))
+                {
+                    this.drop_tree_item (e);
                 }
-
-                if (tf_source !== tf_target.getParent()) {
-                    var path_source = this.get_path_components (tf_source);
-                    var path_target = this.get_path_components (tf_target);
-
-                    var old_path_components = [];
-                    var new_path_components = [];
-                    for (var i = 0; i < path_source.length; i++)
-                    {
-                        old_path_components.push (path_source[i]);
-                    }
-                    for (var i = 0; i < path_target.length; i++)
-                    {
-                        new_path_components.push (path_target[i]);
-                    }
-                    new_path_components.push (path_source[path_source.length - 1]);
-
-                    // now rename the object
-                    var rpc = qooxtunes.io.remote.xbmc_ext.getInstance ();
-                    rpc.callAsync ('rename_playlist_or_folder',
-                        [ 'music', old_path_components, new_path_components ],
-                        function (result, exc) {
-                            if (!result)
-                            {
-                                qooxtunes.ui.dlg.msgbox.go (this.tr ("Error"),
-                                    this.tr ("Could not move %1.", path_source[path_source.length - 1]));
-                                return;
-                            }
-
-                            tf_source.getParent().remove (tf_source);
-                            tf_target.add (tf_source);
-                        });
-
+                else if (e.supportsType ('qx/tracks'))
+                {
+                    this.drop_tracks (e);
                 }
             }, this);
         },
@@ -568,17 +675,6 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
             // not working...
             // qx.io.ImageLoader.load ("qooxtunes/icon/16/folder-close-alt.png");
 
-            this.__drag_indicator = new qx.ui.core.Widget;
-            this.__drag_indicator.setDecorator(new qx.ui.decoration.Single().set({
-                top : [ 1, "solid", "#33508D" ]}));
-
-            this.__drag_indicator.setHeight(0);
-            this.__drag_indicator.setOpacity(0.5);
-            this.__drag_indicator.setLayoutProperties({left: -1000, top: -1000});
-            qx.core.Init.getApplication().getRoot().add(this.__drag_indicator);
-
-            this.init_drag_and_drop ();
-
             var bl1 = new qx.ui.container.Composite(new qx.ui.layout.HBox(8, 'left'));
             bl1.setHeight (32);
 
@@ -593,20 +689,23 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
             add_menu.add(b_add_playlist);
             add_menu.add(b_add_folder);
 
-            this.__b_add = new qx.ui.form.MenuButton (null, 'icon/22/actions/list-add.png');
+            this.__b_add = new qx.ui.form.MenuButton (null, 'qooxtunes/icon/24/plus.png');
+            this.__b_add.setDecorator (null);
             this.__b_add.set ({enabled: false, width: 32, height: 32, padding: 0,
                 toolTip: new qx.ui.tooltip.ToolTip (this.tr ("Add new playlist or folder"))});
             this.__b_add.setMenu (add_menu);
             //this.__b_add.addListener ('execute', this.on_b_add_execute, this);
             bl1.add (this.__b_add);
 
-            this.__b_rename = new qx.ui.form.Button (null, 'icon/22/actions/document-properties.png');
+            this.__b_rename = new qx.ui.form.Button (null, 'qooxtunes/icon/24/edit.png');
+            this.__b_rename.setDecorator (null);
             this.__b_rename.set ({enabled: false, width: 32, height: 32, padding: 0,
                 toolTip: new qx.ui.tooltip.ToolTip (this.tr ("Edit name of selected playlist or folder"))});
             this.__b_rename.addListener ('execute', this.on_b_rename_execute, this);
             bl1.add (this.__b_rename);
 
-            this.__b_delete = new qx.ui.form.Button (null, 'icon/22/actions/edit-delete.png');
+            this.__b_delete = new qx.ui.form.Button (null, 'qooxtunes/icon/24/remove.png');
+            this.__b_delete.setDecorator (null);
             this.__b_delete.set ({enabled: false, width: 32, height: 32, padding: 0,
                 toolTip: new qx.ui.tooltip.ToolTip (this.tr ("Delete selected playlist or folder"))});
             this.__b_delete.addListener ('execute', this.on_b_delete_execute, this);
@@ -644,6 +743,8 @@ qx.Class.define("qooxtunes.ui.pnl.playlists",
             pane.add (this.__spc_playlist, 1);
 
             this.add (pane, { edge: 8 });
+
+            this.init_drag_and_drop ();
 
             this.addListener ('appear', this.on_appear, this);
         }
