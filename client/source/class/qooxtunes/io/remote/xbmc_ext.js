@@ -6,14 +6,14 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
 
         construct : function ()
         {
-            this._rpc = new qooxtunes.io.remote.Rpc();
-            this._rpc.setProtocol ("2.0");
+            this.__rpc = new qooxtunes.io.remote.Rpc();
+            this.__rpc.setProtocol ("2.0");
 
             this._hostname = document.location.hostname;
             this.find_port ();
 
             // 2-minute timeout -- exporting can be a bit slow somtimes
-            this._rpc.setTimeout (120000);
+            this.__rpc.setTimeout (120000);
         },
 
         members :
@@ -38,8 +38,8 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
                 for (var i = 9100; i < 9200; i++)
                 {
                     try {
-                        this._rpc.setUrl ("//" + this._hostname + ":" + i + "/");
-                        var result = this._rpc.callSync ("hello");
+                        this.__rpc.setUrl ("//" + this._hostname + ":" + i + "/");
+                        var result = this.__rpc.callSync ("hello");
                         if (result == null)
                         {
                             continue;
@@ -90,7 +90,7 @@ qx.Class.define("qooxtunes.io.remote.xbmc_ext",
                     }
                 }
 
-                this._rpc.callAsync.apply (this._rpc, args);
+                this.__rpc.callAsync.apply (this.__rpc, args);
             }
         }
 

@@ -67,7 +67,7 @@ qx.Class.define("qooxtunes.Application",
       // here's how you force the locale...
       //qx.locale.Manager.getInstance().setLocale("es");
 
-      this.pc_main = new qooxtunes.ui.ctl.playback_control ();
+      this.pc_main = qooxtunes.ui.ctl.playback_control.getInstance ();
       this.getRoot().add (this.pc_main, { top: 8, left: 8, right: 8 });
 
       this.tv_main = new qooxtunes.ui.tabview.main ();

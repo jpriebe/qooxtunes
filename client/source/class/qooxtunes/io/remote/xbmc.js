@@ -7,13 +7,13 @@ qx.Class.define("qooxtunes.io.remote.xbmc",
 
     construct : function ()
     {
-        this._rpc = new qx.io.remote.Rpc();
-        this._rpc.setUrl ("/jsonrpc");
-        this._rpc.setProtocol ("2.0");
+        this.__rpc = new qx.io.remote.Rpc();
+        this.__rpc.setUrl ("/jsonrpc");
+        this.__rpc.setProtocol ("2.0");
         
         // 2-minute timeout -- a 10,000 song library might take 5-10 seconds to
         // pull on a slowish server
-        this._rpc.setTimeout (120000);
+        this.__rpc.setTimeout (120000);
     },
 
     members :
@@ -50,7 +50,7 @@ qx.Class.define("qooxtunes.io.remote.xbmc",
                 args.push (params[i]);
             }
 
-            this._rpc.callAsync.apply (this._rpc, args);
+            this.__rpc.callAsync.apply (this.__rpc, args);
         }
     }
 

@@ -2,6 +2,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 {
     extend :  qx.ui.container.Composite,
 
+    type : 'singleton',
+
     construct : function ()
     {
         this.base (arguments);
@@ -10,24 +12,39 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
     members :
     {
-        __player_ids : [],
+        __players : [],
         __playing : false,
         __shuffled : false,
         __repeat : false,
         __current_song_id : null,
         __updating_scrubber : false,
         __mouse_down_in_scrubber : false,
+        __update_interval : 500,
+        __rpc : null,
+
+        __active_player : null,
+        __active_track : null,
+
+        get_active_track : function ()
+        {
+            return this.__active_track;
+        },
+
+        get_active_player : function ()
+        {
+            return this.__active_player;
+        },
 
         on_btn_back_execute : function (e)
         {
-            if (this.__player_ids.length == 0)
+            if (this.__players.length == 0)
             {
                 return;
             }
 
             var me = this;
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync("Player.GoTo", [player_id, "previous"],
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync("Player.GoTo", [player_id, "previous"],
                 function (result) {
                     me.update_player ();
                 });
@@ -35,14 +52,14 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         
         on_btn_forward_execute : function (e)
         {
-            if (this.__player_ids.length == 0)
+            if (this.__players.length == 0)
             {
                 return;
             }
 
             var me = this;
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync("Player.GoTo", [player_id, "next"],
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync("Player.GoTo", [player_id, "next"],
                 function (result) {
                     me.update_player ();
                 });
@@ -51,25 +68,33 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
         on_btn_play_execute : function (e)
         {
-            if (this.__player_ids.length == 0)
+            if (this.__players.length == 0)
             {
                 return;
             }
 
-            var player_id = this.__player_ids[0].playerid;
+            var player_id = this.__players[0].playerid;
             var me = this;
-            this._rpc.callAsync("Player.PlayPause", [player_id],
+            this.__rpc.callAsync("Player.PlayPause", [player_id],
                 function (result) {
                     me.update_player();
                 }
             );
         },
 
+        on_btn_now_playing_execute : function (e)
+        {
+            this.__now_playing.update (this.__current_song_id);
+
+            this.__now_playing.placeToWidget(this.__btn_now_playing);
+            this.__now_playing.show();
+        },
+
         on_btn_repeat_execute : function (e)
         {
             var me = this;
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync("Player.SetRepeat", [player_id, "cycle"],
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync("Player.SetRepeat", [player_id, "cycle"],
                 function (result) {
                     me.update_player ();
                 });
@@ -78,8 +103,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         on_btn_shuffle_execute : function (e)
         {
             var me = this;
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync("Player.SetShuffle", [player_id, "toggle"],
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync("Player.SetShuffle", [player_id, "toggle"],
                 function (result) {
                     me.update_player ();
                 });
@@ -123,9 +148,9 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
             var perc = parseFloat (this.__s_scrubber.getValue () / this.__s_scrubber.getMaximum () * 100.0);
 
-            var player_id = this.__player_ids[0].playerid;
+            var player_id = this.__players[0].playerid;
             var me = this;
-            this._rpc.callAsync("Player.Seek", [player_id, perc],
+            this.__rpc.callAsync("Player.Seek", [player_id, perc],
                 function (result) {
                     me.update_player();
                 });
@@ -184,7 +209,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                 }
                 else
                 {
-                    this._rpc.callAsync ('AudioLibrary.GetSongDetails',
+                    this.__rpc.callAsync ('AudioLibrary.GetSongDetails',
                         [this.__current_song_id,
                             ['title', 'albumartist', 'album', 'thumbnail', 'duration']
                         ],
@@ -216,8 +241,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                 return;
             }
 
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync ('Player.GetProperties',
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync ('Player.GetProperties',
                 [player_id,
                 ['speed', 'playlistid', 'position', 'percentage', 'time', 'totaltime', 'shuffled', 'repeat' ]],
                 function (result) {
@@ -306,23 +331,33 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
         update_player_item : function ()
         {
-            if (this.__player_ids.length == 0)
+            if (this.__players.length == 0)
             {
+                this.__active_player = null;
+                this.__active_track = null;
+
                 this.__l_title.setValue ('');
                 this.__l_artist.setValue ('');
+                this.__now_playing.update ();
                 this.reset_timer ();
                 return;
             }
 
+            this.__active_player = this.__players[0];
+
             var me = this;
-            var player_id = this.__player_ids[0].playerid;
-            this._rpc.callAsync("Player.GetItem", [player_id],
+            var player_id = this.__players[0].playerid;
+            this.__rpc.callAsync("Player.GetItem", [player_id],
                 function (result) {
                     if (typeof result.item === 'undefined')
                     {
-                        this.reset_timer ();
+                        me.__active_track = null;
+
+                        me.reset_timer ();
                         return;
                     }
+
+                    me.__active_track = result.item;
 
                     var item = result.item;
 
@@ -336,9 +371,9 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         update_player : function ()
         {
             var me = this;
-            this._rpc.callAsync("Player.GetActivePlayers", [],
+            this.__rpc.callAsync("Player.GetActivePlayers", [],
                 function (result) {
-                    me.__player_ids = result;
+                    me.__players = result;
                     me.update_player_item ();
                 });
         },
@@ -349,43 +384,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
             setTimeout (function () {
                 me.update_player ();
-            }, 500);
+            }, this.__update_interval);
         },
-
-        build_label : function (value, size, bold)
-        {
-            var lb;
-
-            lb = new qx.ui.basic.Label (value);
-
-            if (typeof bold === "undefined")
-            {
-                bold = false;
-            }
-
-            var px_size = '16px';
-            if (size == 'small')
-            {
-                px_size = '11px';
-            }
-            else if (size == 'medium')
-            {
-                px_size = '14px';
-            }
-
-
-            if (bold)
-            {
-                lb.setFont (qx.bom.Font.fromString(px_size + " sans-serif bold"));
-            }
-            else
-            {
-                lb.setFont (qx.bom.Font.fromString(px_size + " sans-serif"));
-            }
-
-            return lb;
-        },
-
 
         enable_controls : function (enable)
         {
@@ -394,12 +394,23 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this.__btn_forward.setEnabled (enable);
         },
 
-
-
         
         init : function ()
         {
-            this._rpc = qooxtunes.io.remote.xbmc.getInstance ();
+            this.__rpc = qooxtunes.io.remote.xbmc.getInstance ();
+
+            var qs = qooxtunes.util.url.query_string ();
+            if (typeof qs.update_interval !== 'undefined')
+            {
+                this.__update_interval = parseInt (qs.update_interval);
+                if (this.__update_interval < 250)
+                {
+                    this.__update_interval = 250;
+                }
+            }
+
+            this.__now_playing = new qooxtunes.ui.ctl.now_playing ();
+            this.__now_playing.setPosition ('bottom-center');
 
             this.setLayout(new qx.ui.layout.HBox(8));
             this.setHeight (76);
@@ -466,27 +477,31 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this.__cl2.setDecorator ('rounded');
 
             this.__i_artwork = new qx.ui.basic.Image('qooxtunes/icon/64/music.png');
-            this.__i_artwork.setDecorator (new qx.ui.decoration.Single (1, 'solid', '#000000'));
+            this.__i_artwork.setDecorator (new qx.ui.decoration.Single (1, 'solid', '#666666'));
             this.__i_artwork.setScale(true);
             this.__i_artwork.setWidth(60);
             this.__i_artwork.setHeight(60);
             this.__cl2.add(this.__i_artwork, { left: 8, top: 8 });
 
-            this.__l_title = this.build_label ('', 'medium', true);
+            this.__l_title = qooxtunes.util.ui.build_label ('', 'medium', true);
             this.__l_title.setTextAlign ('center');
             this.__cl2.add (this.__l_title, { top: 8, left: 76, right: 8 });
 
-            this.__l_artist = this.build_label ('', 'small', false);
+            this.__l_artist = qooxtunes.util.ui.build_label ('', 'small', false);
             this.__l_artist.setTextAlign ('center');
             this.__cl2.add (this.__l_artist, { top: 26, left: 76, right: 8 });
 
+            this.__btn_now_playing = new qx.ui.form.Button(null, "qooxtunes/icon/32/list-ol.png");
+            this.__btn_now_playing.setDecorator (null);
+            this.__btn_now_playing.addListener ("execute", this.on_btn_now_playing_execute, this);
+            this.__cl2.add (this.__btn_now_playing, {top: 16, right: 8});
 
             this.__btn_repeat = new qx.ui.form.Button(null, "qooxtunes/icon/16/loop.png");
             this.__btn_repeat.setDecorator (null);
             this.__btn_repeat.addListener("execute", this.on_btn_repeat_execute, this);
             this.__cl2.add (this.__btn_repeat, { top: 40, left: 76});
 
-            this.__l_time = this.build_label ('', 'small', false);
+            this.__l_time = qooxtunes.util.ui.build_label ('', 'small', false);
             this.__l_time.setWidth (48);
             this.__cl2.add (this.__l_time, { top: 44, left: 112 });
 
@@ -507,17 +522,17 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             this.__s_scrubber.addListener ('mousedown', this.on_s_scrubber_mousedown, this);
             this.__s_scrubber.addListener ('mouseup', this.on_s_scrubber_mouseup, this);
             this.__s_scrubber.addListener ('changeValue', this.on_s_scrubber_changeValue, this);
-            this.__cl2.add (this.__s_scrubber, { top : 45, left : 168, right: 100 });
+            this.__cl2.add (this.__s_scrubber, { top : 45, left : 168, right: 148 });
 
-            this.__l_total_time = this.build_label ('', 'small', false);
+            this.__l_total_time = qooxtunes.util.ui.build_label ('', 'small', false);
             this.__l_total_time.setTextAlign ('right');
             this.__l_total_time.setWidth (48);
-            this.__cl2.add (this.__l_total_time, { top: 44, right: 44 });
+            this.__cl2.add (this.__l_total_time, { top: 44, right: 92 });
 
             this.__btn_shuffle = new qx.ui.form.Button(null, "qooxtunes/icon/16/shuffle.png");
             this.__btn_shuffle.setDecorator (null);
             this.__btn_shuffle.addListener("execute", this.on_btn_shuffle_execute, this);
-            this.__cl2.add (this.__btn_shuffle, { top: 40, right: 8});
+            this.__cl2.add (this.__btn_shuffle, { top: 40, right: 56});
 
             this.__cl3 = new qx.ui.container.Composite (new qx.ui.layout.Canvas());
             this.__cl3.setWidth (232);

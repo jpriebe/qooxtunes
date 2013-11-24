@@ -23,6 +23,11 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
         this.init ();
     },
 
+    events :
+    {
+        'searchChanged' : "qx.event.type.Data"
+    },
+
     members :
     {
         __rpc : null,
@@ -32,22 +37,37 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         __search_expression : '',
         __search_regex : '',
+        __search_case_sensitive : false,
 
-        search : function (search_expression, column)
+        search : function (search_expression, column, regex)
         {
-            this.__search_expression = search_expression.toLowerCase ();
-
-            if (search_expression == '')
+            if (typeof regex === 'undefined')
             {
-                this.__search_expression = '';
-                this.__search_regex = '';
-                this.__tm.updateView(0); // needed?
-                this.__tm.setView(0);
-                return;
+                regex = false;
             }
 
-            var terms = search_expression.split (/\s+/);
-            this.__search_regex = new RegExp(terms.join ('|'));
+            if (regex)
+            {
+                this.__search_case_sensitive = true;
+                this.__search_regex = search_expression;
+            }
+            else
+            {
+                this.__search_case_sensitive = false;
+                this.__search_expression = search_expression.toLowerCase ();
+
+                if (search_expression == '')
+                {
+                    this.__search_expression = '';
+                    this.__search_regex = '';
+                    this.__tm.updateView(0); // needed?
+                    this.__tm.setView(0);
+                    return;
+                }
+
+                var terms = search_expression.split (/\s+/);
+                this.__search_regex = new RegExp(terms.join ('|'));
+            }
 
 
             if (column == null)
@@ -225,11 +245,19 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 var data;
                 if (rowdata[this.__search_column] instanceof Array)
                 {
-                    data = rowdata[this.__search_column].join (' ').toLowerCase ();
+                    data = rowdata[this.__search_column].join (' ');
+                    if (!this.__search_case_sensitive)
+                    {
+                        data = data.toLowerCase ();
+                    }
                 }
                 else
                 {
-                    data = rowdata[this.__search_column].toLowerCase();
+                    data = rowdata[this.__search_column];
+                    if (!this.__search_case_sensitive)
+                    {
+                        data = data.toLowerCase ();
+                    }
                 }
 
                 if (data.match (this.__search_regex))
@@ -560,10 +588,15 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
         {
             if (this.__play_queue.length == 0)
             {
-                this.__rpc.callAsync ("Player.Open", [ { playlistid: playlist_id }],
-                    function (result) {
-                    }
-                );
+                var pbc = qooxtunes.ui.ctl.playback_control.getInstance ();
+
+                if (pbc.get_active_track() == null)
+                {
+                    this.__rpc.callAsync ("Player.Open", [ { playlistid: playlist_id }],
+                        function (result) {
+                        }
+                    );
+                }
                 return;
             }
 
@@ -702,6 +735,34 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             );
         },
 
+        on_cmd_filter_for_artist : function (e)
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length != 1)
+            {
+                return;
+            }
+
+            var artist = sel_items[0][3];
+
+            this.fireDataEvent ('searchChanged', 'artist=' + artist);
+        },
+
+        on_cmd_filter_for_album : function (e)
+        {
+            var sel_items = this.get_selected_items ();
+
+            if (sel_items.length != 1)
+            {
+                return;
+            }
+
+            var album = sel_items[0][4];
+
+            this.fireDataEvent ('searchChanged', 'album=' + album);
+        },
+
         on_cmd_edit : function (e)
         {
             var sel_items = this.get_selected_items ();
@@ -836,6 +897,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             {
                 this.__btn_play.setEnabled (false);
                 this.__btn_queue.setEnabled (false);
+                this.__btn_filter_for_artist.setEnabled (false);
+                this.__btn_filter_for_album.setEnabled (false);
                 this.__btn_edit.setEnabled (false);
                 this.__btn_export.setEnabled (false);
                 this.__btn_download.setEnabled (false);
@@ -846,6 +909,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             {
                 this.__btn_play.setEnabled (true);
                 this.__btn_queue.setEnabled (true);
+                this.__btn_filter_for_artist.setEnabled (true);
+                this.__btn_filter_for_album.setEnabled (true);
                 this.__btn_edit.setEnabled (true);
                 this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
@@ -856,6 +921,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             {
                 this.__btn_play.setEnabled (true);
                 this.__btn_queue.setEnabled (true);
+                this.__btn_filter_for_artist.setEnabled (false);
+                this.__btn_filter_for_album.setEnabled (false);
                 this.__btn_edit.setEnabled (true);
                 this.__btn_export.setEnabled (true);
                 this.__btn_download.setEnabled (true);
@@ -1015,6 +1082,23 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             this.__cm_songs.add (this.__btn_queue);
 
             this.__cm_songs.add (new qx.ui.menu.Separator ());
+
+            if (!this.__limited_columns)
+            {
+                this.__cmd_filter_for_artist = new qx.ui.core.Command();
+                this.__cmd_filter_for_artist.addListener("execute", this.on_cmd_filter_for_artist, this);
+
+                this.__btn_filter_for_artist = new qx.ui.menu.Button(this.tr ("Filter for Artist"), "", this.__cmd_filter_for_artist);
+                this.__cm_songs.add (this.__btn_filter_for_artist);
+
+                this.__cmd_filter_for_album = new qx.ui.core.Command();
+                this.__cmd_filter_for_album.addListener("execute", this.on_cmd_filter_for_album, this);
+
+                this.__btn_filter_for_album = new qx.ui.menu.Button(this.tr ("Filter for Album"), "", this.__cmd_filter_for_album);
+                this.__cm_songs.add (this.__btn_filter_for_album);
+
+                this.__cm_songs.add (new qx.ui.menu.Separator ());
+            }
 
             this.__cmd_edit = new qx.ui.core.Command("Ctrl+I");
             this.__cmd_edit.addListener("execute", this.on_cmd_edit, this);

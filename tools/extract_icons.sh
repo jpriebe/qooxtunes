@@ -41,7 +41,7 @@ mv forward.png ../client/source/resource/qooxtunes/icon/24/forward-dark.png
 ./font-awesome-to-png.py --color '#666666' --size 16 music
 mv music.png ../client/source/resource/qooxtunes/icon/16
 
-./font-awesome-to-png.py --color '#666666' --size 64 music
+./font-awesome-to-png.py --color '#666666' --size 64 --fontsize 32 music
 mv music.png ../client/source/resource/qooxtunes/icon/64
 
 ./font-awesome-to-png.py --color '#666666' --size 16 random
@@ -58,9 +58,14 @@ mv list.png ../client/source/resource/qooxtunes/icon/16
 ./font-awesome-to-png.py --color '#666666' --size 16 --fontsize 14 list-ul
 mv list-ul.png ../client/source/resource/qooxtunes/icon/16
 
+./font-awesome-to-png.py --color '#666666' --size 32 --fontsize 24 list-ol
+mv list-ol.png ../client/source/resource/qooxtunes/icon/32
+
 ./font-awesome-to-png.py --color '#666666' --size 24 plus
 mv plus.png ../client/source/resource/qooxtunes/icon/24
 ./font-awesome-to-png.py --color '#666666' --size 24 edit
 mv edit.png ../client/source/resource/qooxtunes/icon/24
 ./font-awesome-to-png.py --color '#666666' --size 24 remove
 mv remove.png ../client/source/resource/qooxtunes/icon/24
+./font-awesome-to-png.py --color '#666666' --size 16 remove
+mv remove.png ../client/source/resource/qooxtunes/icon/16

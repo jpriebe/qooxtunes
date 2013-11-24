@@ -13,6 +13,38 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
 
         __search_field : null,
 
+        on_table_searchChanged : function (e)
+        {
+            this.__tf_search.setValue (e.getData());
+            this.do_search ();
+        },
+
+        do_search : function ()
+        {
+            var search_value = this.__tf_search.getValue ().trim ();
+
+            var matches;
+
+            var t = this.__p_library.get_table ();
+            if ((matches = search_value.match (/artist\s*=(.+)/)) != null)
+            {
+                t.search ('^' + matches[1].trim () + '$', 'artist', true);
+                return;
+            }
+            if ((matches = search_value.match (/album\s*=(.+)/)) != null)
+            {
+                t.search ('^' + matches[1].trim () + '$', 'album', true);
+                return;
+            }
+            if ((matches = search_value.match (/title\s*=(.+)/)) != null)
+            {
+                t.search ('^' + matches[1].trim () + '$', 'title', true);
+                return;
+            }
+
+            t.search (search_value, this.__search_field);
+        },
+
         on_tf_search_input : function (e)
         {
             if (this.__filter_timeout != null)
@@ -21,12 +53,8 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
             }
 
             var me = this;
-            this.__filter_timeout = setTimeout (
-                function () {
-                    var search_value = me.__tf_search.getValue ().trim ();
-
-                    var t = me.__p_library.get_table ();
-                    t.search (search_value, this.__search_field);
+            this.__filter_timeout = setTimeout (function () {
+                    me.do_search ();
                 }, 300);
         },
 
@@ -190,6 +218,8 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
 
             this.__p_library = new qooxtunes.ui.pnl.music_library ();
             this.__p_library.addListener ('doneEditingPlaylist', this.on_p_playlists_doneEditingPlaylist, this);
+
+            this.__p_library.get_table ().addListener ('searchChanged', this.on_table_searchChanged, this);
 
             c.add (this.__p_library, { edge: 0 });
 
