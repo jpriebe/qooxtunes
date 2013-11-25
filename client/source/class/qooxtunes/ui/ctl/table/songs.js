@@ -1115,20 +1115,20 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             this.__cm_songs.add (new qx.ui.menu.Separator ());
 
+            this.__cmd_filter_for_artist = new qx.ui.core.Command();
+            this.__cmd_filter_for_artist.addListener("execute", this.on_cmd_filter_for_artist, this);
+
+            this.__btn_filter_for_artist = new qx.ui.menu.Button(this.tr ("Filter for Artist"), "", this.__cmd_filter_for_artist);
+
+            this.__cmd_filter_for_album = new qx.ui.core.Command();
+            this.__cmd_filter_for_album.addListener("execute", this.on_cmd_filter_for_album, this);
+
+            this.__btn_filter_for_album = new qx.ui.menu.Button(this.tr ("Filter for Album"), "", this.__cmd_filter_for_album);
+
             if (!this.__limited_columns)
             {
-                this.__cmd_filter_for_artist = new qx.ui.core.Command();
-                this.__cmd_filter_for_artist.addListener("execute", this.on_cmd_filter_for_artist, this);
-
-                this.__btn_filter_for_artist = new qx.ui.menu.Button(this.tr ("Filter for Artist"), "", this.__cmd_filter_for_artist);
                 this.__cm_songs.add (this.__btn_filter_for_artist);
-
-                this.__cmd_filter_for_album = new qx.ui.core.Command();
-                this.__cmd_filter_for_album.addListener("execute", this.on_cmd_filter_for_album, this);
-
-                this.__btn_filter_for_album = new qx.ui.menu.Button(this.tr ("Filter for Album"), "", this.__cmd_filter_for_album);
                 this.__cm_songs.add (this.__btn_filter_for_album);
-
                 this.__cm_songs.add (new qx.ui.menu.Separator ());
             }
 
