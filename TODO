@@ -2,10 +2,6 @@
 BUGS
 ------------------------------------------------------------------------------------------
 
-- play and queue not working now???
-
-- if nothing is playing when you launch the web interface, you get exceptions
-
 - if nothing is in the queue, the popup comes up, but it's completely empty; would
   be better to have it say "nothing queued"
 
