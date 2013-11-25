@@ -610,8 +610,13 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             );
         },
 
-        build_play_queue : function ()
+        build_play_queue : function (allow_single)
         {
+            if (typeof allow_single === 'undefined')
+            {
+                allow_single = false;
+            }
+
             var sel_items = this.get_selected_items ();
 
             if (sel_items.length < 1)
@@ -632,6 +637,13 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             var sel_indices = this.get_selected_indices ();
 
+            if (allow_single)
+            {
+                this.__play_queue.push (sel_items[0][0]);
+                return;
+            }
+
+            // otherwise, if user has selected one song, queue up the next 300...
             var start_idx = sel_indices[0];
             var max_idx = start_idx + 300;
 
@@ -662,17 +674,37 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             var me = this;
 
-            me.__rpc.callAsync ("Playlist.Clear", [playlist_id],
-                function (result) {
-                    me.queue_next_item (playlist_id);
-                }
-            );
+            var pbc = qooxtunes.ui.ctl.playback_control.getInstance ();
+            var player = pbc.get_active_player();
+
+            if (player)
+            {
+                me.__rpc.callAsync ("Player.Stop", [player.playerid],
+                    function (result) {
+                        me.__rpc.callAsync ("Playlist.Clear", [playlist_id],
+                            function (result) {
+                                pbc.update_player (function () {
+                                    me.queue_next_item (playlist_id);
+                                });
+                            }
+                        );
+                    }
+                );
+            }
+            else
+            {
+                me.__rpc.callAsync ("Playlist.Clear", [playlist_id],
+                    function (result) {
+                        me.queue_next_item (playlist_id);
+                    }
+                );
+            }
         },
 
 
         queue_selected : function (playlist_id)
         {
-            this.build_play_queue ();
+            this.build_play_queue (true);
 
             if (this.__play_queue.length == 0)
             {

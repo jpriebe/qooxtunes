@@ -20,19 +20,32 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         __updating_scrubber : false,
         __mouse_down_in_scrubber : false,
         __update_interval : 500,
+        __update_timeout : null,
         __rpc : null,
 
         __active_player : null,
         __active_track : null,
+        __current_playlist_id : -1,
+        __current_playlist_position : -1,
+
+        get_active_player : function ()
+        {
+            return this.__active_player;
+        },
 
         get_active_track : function ()
         {
             return this.__active_track;
         },
 
-        get_active_player : function ()
+        get_current_playlist_id : function ()
         {
-            return this.__active_player;
+            return this.__current_playlist_id;
+        },
+
+        get_current_playlist_position : function ()
+        {
+            return this.__current_playlist_position;
         },
 
         on_btn_back_execute : function (e)
@@ -84,7 +97,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
         on_btn_now_playing_execute : function (e)
         {
-            this.__now_playing.update (this.__current_song_id);
+            this.__now_playing.update (this.__current_playlist_position);
 
             this.__now_playing.placeToWidget(this.__btn_now_playing);
             this.__now_playing.show();
@@ -250,6 +263,9 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                     me.__l_time.setValue (me.format_time (result.time.hours, result.time.minutes, result.time.seconds, 3));
                     me.__l_total_time.setValue (me.format_time (result.totaltime.hours, result.totaltime.minutes, result.totaltime.seconds, 3));
 
+                    me.__current_playlist_id = result.playlistid;
+                    me.__current_playlist_position = result.position;
+
                     if (me.__playing)
                     {
                         if (result.speed == 0)
@@ -329,17 +345,25 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
             );
         },
 
-        update_player_item : function ()
+        update_player_item : function (callback)
         {
             if (this.__players.length == 0)
             {
-                this.__active_player = null;
-                this.__active_track = null;
+                if (this.__active_player != null)
+                {
+                    this.__active_player = null;
+                    this.__active_track = null;
 
-                this.__l_title.setValue ('');
-                this.__l_artist.setValue ('');
-                this.__now_playing.update ();
+                    this.__l_title.setValue ('');
+                    this.__l_artist.setValue ('');
+                    this.__now_playing.update ();
+                }
                 this.reset_timer ();
+
+                if (typeof callback !== 'undefined')
+                {
+                    callback ();
+                }
                 return;
             }
 
@@ -354,6 +378,10 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                         me.__active_track = null;
 
                         me.reset_timer ();
+                        if (typeof callback !== 'undefined')
+                        {
+                            callback ();
+                        }
                         return;
                     }
 
@@ -365,16 +393,21 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                     {
                         me.update_song_info (item.id);
                     }
+
+                    if (typeof callback !== 'undefined')
+                    {
+                        callback ();
+                    }
                 });
         },
 
-        update_player : function ()
+        update_player : function (callback)
         {
             var me = this;
             this.__rpc.callAsync("Player.GetActivePlayers", [],
                 function (result) {
                     me.__players = result;
-                    me.update_player_item ();
+                    me.update_player_item (callback);
                 });
         },
 
@@ -382,7 +415,14 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
         {
             var me = this;
 
-            setTimeout (function () {
+            if (this.__update_timeout != null)
+            {
+                clearTimeout (this.__update_timeout);
+                this.__update_timeout = null;
+            }
+
+            this.__update_timeout = setTimeout (function () {
+                this.__update_timeout = null;
                 me.update_player ();
             }, this.__update_interval);
         },
@@ -485,11 +525,11 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
 
             this.__l_title = qooxtunes.util.ui.build_label ('', 'medium', true);
             this.__l_title.setTextAlign ('center');
-            this.__cl2.add (this.__l_title, { top: 8, left: 76, right: 8 });
+            this.__cl2.add (this.__l_title, { top: 8, left: 76, right: 92 });
 
             this.__l_artist = qooxtunes.util.ui.build_label ('', 'small', false);
             this.__l_artist.setTextAlign ('center');
-            this.__cl2.add (this.__l_artist, { top: 26, left: 76, right: 8 });
+            this.__cl2.add (this.__l_artist, { top: 26, left: 76, right: 92 });
 
             this.__btn_now_playing = new qx.ui.form.Button(null, "qooxtunes/icon/32/list-ol.png");
             this.__btn_now_playing.setDecorator (null);

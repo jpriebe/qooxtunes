@@ -14,7 +14,7 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
         __items : [],
         __rpc : null,
 
-        get_tracks : function (current_track_id, playlist_id)
+        get_tracks : function (current_playlist_position, playlist_id)
         {
             var me = this;
 
@@ -22,21 +22,18 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
                 [ 'title', 'artist' ]
             ],
                 function (result) {
-                    var found_track = false;
+                    if (typeof result.items === 'undefined')
+                    {
+                        return;
+                    }
                     for (var i = 0; i < result.items.length; i++)
                     {
+                        if (i <= current_playlist_position)
+                        {
+                            continue;
+                        }
+
                         var itm = result.items[i];
-
-                        if (itm.id == current_track_id)
-                        {
-                            found_track = true;
-                            continue;
-                        }
-
-                        if (!found_track)
-                        {
-                            continue;
-                        }
 
                         var np_itm = new qooxtunes.ui.ctl.now_playing_item (playlist_id, i, itm.id, itm.title, itm.artist[0]);
                         me.__item_pane.add (np_itm);
@@ -45,7 +42,7 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
             );
         },
 
-        update : function (current_track_id)
+        update : function (current_playlist_position)
         {
             this.__item_pane.removeAll ();
 
@@ -58,7 +55,7 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
                         if (result[i].type == 'audio')
                         {
                             playlist_id = result[i].playlistid;
-                            me.get_tracks (current_track_id, playlist_id);
+                            me.get_tracks (current_playlist_position, playlist_id);
                             break;
                         }
                     }
