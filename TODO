@@ -2,14 +2,16 @@
 BUGS
 ------------------------------------------------------------------------------------------
 
-- if nothing is in the queue, the popup comes up, but it's completely empty; would
-  be better to have it say "nothing queued"
+- sorting on column like "genre" is VERY SLOW
+
+- filter for a genre, e.g. "Traditional".  Select all, change genre.  Save;
+  genres are changed, but software throws exception when trying to load
+  a now-empty list.  Actually, it seems that if *any* of the songs are
+  now ineligible for the filtered results, you get an exception.
 
 - select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't
 appear automatically
 
-- run search, choose type of search (e.g. "Artist"), run new search, the new search
-  will ignore your dropdown selection
 
 - can't move a playlist to a folder that is scrolled offscreen
 
@@ -41,6 +43,7 @@ FEATURES
   - display number of songs, total duration
   - ability to copy songs from one playlist to another
   - prettier layout in list box
+  - when returning to the playlist panel, keep the correct playlist selected
   - cancel button
 
 - some way to update XBMC library

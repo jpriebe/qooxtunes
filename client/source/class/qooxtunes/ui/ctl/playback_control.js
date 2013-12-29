@@ -224,7 +224,7 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                 {
                     this.__rpc.callAsync ('AudioLibrary.GetSongDetails',
                         [this.__current_song_id,
-                            ['title', 'albumartist', 'album', 'thumbnail', 'duration']
+                            ['title', 'artist', 'album', 'thumbnail', 'duration']
                         ],
                         function (result) {
                             var sd = result.songdetails;
@@ -235,8 +235,8 @@ qx.Class.define("qooxtunes.ui.ctl.playback_control",
                                 me.__i_artwork.setSource (img_url);
 
                                 me.__l_title.setValue (sd.title);
-                                var album_artist = (sd.albumartist.length > 0) ? sd.albumartist[0] : '';
-                                var line2 = album_artist + " - " + sd.album;
+                                var artist = (sd.artist.length > 0) ? sd.artist[0] : '';
+                                var line2 = artist + " - " + sd.album;
                                 me.__l_artist.setValue (line2);
 
                                 me.__s_scrubber.setMaximum (sd.duration);

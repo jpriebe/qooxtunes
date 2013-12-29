@@ -33,132 +33,156 @@ msgstr ""
 msgid "Loading playlist %1..."
 msgstr ""
 
+#: qooxtunes/ui/ctl/now_playing.js:48
+msgid "Nothing queued."
+msgstr ""
+
 #: qooxtunes/ui/dlg/song_editor.js:625
 #: qooxtunes/ui/dlg/multi_song_editor.js:488
-#: qooxtunes/ui/ctl/table/songs.js:93
+#: qooxtunes/ui/ctl/table/songs.js:115
 msgid "Track #"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:549
 #: qooxtunes/ui/dlg/multi_song_editor.js:394
-#: qooxtunes/ui/ctl/table/songs.js:94 qooxtunes/ui/ctl/table/songs.js:106
+#: qooxtunes/ui/ctl/table/songs.js:116 qooxtunes/ui/ctl/table/songs.js:130
+#: qooxtunes/ui/tabview/page/music.js:185
 msgid "Name"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:559
 #: qooxtunes/ui/dlg/multi_song_editor.js:406
-#: qooxtunes/ui/ctl/table/songs.js:95 qooxtunes/ui/ctl/table/songs.js:107
-#: qooxtunes/ui/tabview/page/music.js:162
+#: qooxtunes/ui/ctl/table/songs.js:117 qooxtunes/ui/ctl/table/songs.js:131
+#: qooxtunes/ui/tabview/page/music.js:190
 msgid "Artist"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:588
 #: qooxtunes/ui/dlg/multi_song_editor.js:443
-#: qooxtunes/ui/ctl/table/songs.js:96 qooxtunes/ui/ctl/table/songs.js:108
-#: qooxtunes/ui/tabview/page/music.js:167
+#: qooxtunes/ui/ctl/table/songs.js:118 qooxtunes/ui/ctl/table/songs.js:132
+#: qooxtunes/ui/tabview/page/music.js:195
 msgid "Album"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:119 qooxtunes/ui/ctl/table/songs.js:133
+msgid "Disc"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:134
+msgid "Track"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:609
 #: qooxtunes/ui/dlg/multi_song_editor.js:469
-#: qooxtunes/ui/ctl/table/songs.js:109 qooxtunes/ui/tabview/page/music.js:172
+#: qooxtunes/ui/ctl/table/songs.js:135 qooxtunes/ui/tabview/page/music.js:200
 msgid "Genre"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:562
 #: qooxtunes/ui/dlg/multi_song_editor.js:409
-#: qooxtunes/ui/ctl/table/songs.js:110
+#: qooxtunes/ui/ctl/table/songs.js:136
 msgid "Year"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:111
-msgid "Track"
-msgstr ""
-
-#: qooxtunes/ui/ctl/table/songs.js:112
+#: qooxtunes/ui/ctl/table/songs.js:137
 msgid "Duration"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:113
+#: qooxtunes/ui/ctl/table/songs.js:138
 msgid "Playcount"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:619
 #: qooxtunes/ui/dlg/multi_song_editor.js:482
-#: qooxtunes/ui/ctl/table/songs.js:114
+#: qooxtunes/ui/ctl/table/songs.js:139
 msgid "Rating"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:115
+#: qooxtunes/ui/ctl/table/songs.js:140
 msgid "Comment"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:248
+#: qooxtunes/ui/ctl/table/songs.js:293
 msgid "Loading XBMC library..."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:284
+#: qooxtunes/ui/ctl/table/songs.js:330
 msgid "Loading playlist %1"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:803
+#: qooxtunes/ui/ctl/table/songs.js:938
 msgid "Exporting..."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:813
+#: qooxtunes/ui/ctl/table/songs.js:948
 msgid "Error exporting to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:813 qooxtunes/ui/ctl/table/songs.js:825
+#: qooxtunes/ui/ctl/table/songs.js:948 qooxtunes/ui/ctl/table/songs.js:960
 msgid "Export"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:819
+#: qooxtunes/ui/ctl/table/songs.js:954
 msgid "Successfully exported song to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:823
+#: qooxtunes/ui/ctl/table/songs.js:958
 msgid "Successfully exported songs to export folder."
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:842 qooxtunes/ui/ctl/table/songs.js:853
+#: qooxtunes/ui/ctl/table/songs.js:979 qooxtunes/ui/ctl/table/songs.js:992
 msgid "Export song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:843 qooxtunes/ui/ctl/table/songs.js:852
+#: qooxtunes/ui/ctl/table/songs.js:980 qooxtunes/ui/ctl/table/songs.js:991
 msgid "Download song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:862
+#: qooxtunes/ui/ctl/table/songs.js:1003
 msgid "Export songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:863
+#: qooxtunes/ui/ctl/table/songs.js:1004
 msgid "Download songs"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:998
+#: qooxtunes/ui/ctl/table/songs.js:1140
 msgid "Select All"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:1008
+#: qooxtunes/ui/ctl/table/songs.js:1150
 msgid "Play"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:1014
+#: qooxtunes/ui/ctl/table/songs.js:1156
 msgid "Queue"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:1022
+#: qooxtunes/ui/ctl/table/songs.js:1164
+msgid "Filter for Artist"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:1169
+msgid "Filter for Album"
+msgstr ""
+
+#: qooxtunes/ui/ctl/table/songs.js:1181
 msgid "Edit Info"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:1030
+#: qooxtunes/ui/ctl/table/songs.js:1189
 msgid "Export Song"
 msgstr ""
 
-#: qooxtunes/ui/ctl/table/songs.js:1036
+#: qooxtunes/ui/ctl/table/songs.js:1195
 msgid "Download Song"
+msgstr ""
+
+#: qooxtunes/ui/dlg/song_editor.js:549
+#: qooxtunes/ui/dlg/multi_song_editor.js:394
+#: qooxtunes/ui/ctl/table/songs.js:114 qooxtunes/ui/ctl/table/songs.js:128
+#: qooxtunes/ui/tabview/page/music.js:185
+msgid "Name"
 msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:29 qooxtunes/ui/dlg/multi_song_editor.js:24
@@ -181,7 +205,7 @@ msgstr ""
 
 #: qooxtunes/ui/dlg/song_editor.js:598
 #: qooxtunes/ui/dlg/multi_song_editor.js:455
-#: qooxtunes/ui/tabview/page/music.js:177
+#: qooxtunes/ui/tabview/page/music.js:205
 msgid "Comments"
 msgstr ""
 
@@ -250,7 +274,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: qooxtunes/ui/pnl/playlists.js:167 qooxtunes/ui/tabview/page/music.js:126
+#: qooxtunes/ui/pnl/playlists.js:167 qooxtunes/ui/tabview/page/music.js:154
 msgid "Playlists"
 msgstr ""
 
@@ -346,22 +370,17 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: qooxtunes/ui/tabview/page/music.js:123
+#: qooxtunes/ui/tabview/page/music.js:151
 msgid "Library"
 msgstr ""
 
-#: qooxtunes/ui/tabview/page/music.js:148
+#: qooxtunes/ui/tabview/page/music.js:176
 msgid "Search by"
 msgstr ""
 
 #. search by all fields
-#: qooxtunes/ui/tabview/page/music.js:151
+#: qooxtunes/ui/tabview/page/music.js:179
 msgid "All"
-msgstr ""
-
-#. search by title
-#: qooxtunes/ui/tabview/page/music.js:157
-msgid "Title"
 msgstr ""
 
 #: qooxtunes/ui/tabview/page/photos.js:7
@@ -371,3 +390,6 @@ msgstr ""
 #: qooxtunes/ui/tabview/page/video.js:7
 msgid "Video"
 msgstr ""
+
+#~ msgid "Nothing currently playing"
+#~ msgstr ""

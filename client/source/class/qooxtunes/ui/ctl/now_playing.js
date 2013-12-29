@@ -26,6 +26,8 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
                     {
                         return;
                     }
+
+                    var queued_item_count = 0;
                     for (var i = 0; i < result.items.length; i++)
                     {
                         if (i <= current_playlist_position)
@@ -37,6 +39,20 @@ qx.Class.define("qooxtunes.ui.ctl.now_playing",
 
                         var np_itm = new qooxtunes.ui.ctl.now_playing_item (playlist_id, i, itm.id, itm.title, itm.artist[0]);
                         me.__item_pane.add (np_itm);
+
+                        queued_item_count++;
+                    }
+
+                    if (queued_item_count == 0)
+                    {
+                        var c = new qx.ui.container.Composite ();
+                        c.setLayout (new qx.ui.layout.Canvas ());
+                        c.setHeight (46);
+
+                        var l = new qx.ui.basic.Label (me.tr ("Nothing queued."));
+                        c.add (l, { top: 8, left: 8 });
+
+                        me.__item_pane.add (c);
                     }
                 }
             );

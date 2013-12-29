@@ -36,9 +36,9 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
                 t.search ('^' + matches[1].trim () + '$', 'album', true);
                 return;
             }
-            if ((matches = search_value.match (/title\s*=(.+)/)) != null)
+            if ((matches = search_value.match (/name\s*=(.+)/)) != null)
             {
-                t.search ('^' + matches[1].trim () + '$', 'title', true);
+                t.search ('^' + matches[1].trim () + '$', 'name', true);
                 return;
             }
 
@@ -182,8 +182,8 @@ qx.Class.define("qooxtunes.ui.tabview.page.music",
             this.__b_search_all.setValue (true);
             this.__m_search.add (this.__b_search_all);
 
-            this.__b_search_title = new qx.ui.menu.CheckBox(this.trc ("search by title", "Title"));
-            this.__b_search_title.setUserData ('search_field', 'title');
+            this.__b_search_title = new qx.ui.menu.CheckBox(this.trc ("search by name", "Name"));
+            this.__b_search_title.setUserData ('search_field', 'name');
             this.__b_search_title.addListener ('click', this.on_m_search_changeValue, this);
             this.__m_search.add (this.__b_search_title);
 

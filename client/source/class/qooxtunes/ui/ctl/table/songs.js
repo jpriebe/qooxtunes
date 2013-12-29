@@ -49,7 +49,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             if (regex)
             {
                 this.__search_case_sensitive = true;
-                this.__search_regex = search_expression;
+                this.__search_regex = new RegExp (search_expression, 'i');
             }
             else
             {
@@ -66,7 +66,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 }
 
                 var terms = search_expression.split (/\s+/);
-                this.__search_regex = new RegExp(terms.join ('|'));
+                this.__search_regex = new RegExp(terms.join ('|'), 'i');
             }
 
 
@@ -76,7 +76,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 this.__search_column = 1;
             }
 
-            if (column == 'title')
+            if (column == 'name')
             {
                 this.__search_column = 2;
             }
@@ -99,6 +99,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             this.__tm.updateView(1);
             this.__tm.setView(1);
+
+            this.getPaneScroller(0).getChildControl("scrollbar-y").setPosition(0);
         },
 
 
@@ -106,18 +108,20 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
         {
             this.__tm = new smart.model.Default();
 
-            var col_name, col_artist, col_album, col_track;
+            var col_name, col_artist, col_album, col_track, col_disc;
             if (this.__limited_columns)
             {
                 this.__tm.setColumns([ "_SongID", "_SearchValue",
                     this.tr ("Track #"),
                     this.tr ("Name"),
                     this.tr ("Artist"),
-                    this.tr ("Album")],
-                    ['songid', 'search_value', 'track_num', 'title', 'artist', 'album']);
+                    this.tr ("Album"),
+                    this.tr ("Disc")],
+                    ['songid', 'search_value', 'track_num', 'title', 'artist', 'album', 'disc']);
                 col_name = 3;
                 col_artist = 4;
                 col_album = 5;
+                col_disc = 6;
                 col_track = 2;
             }
             else
@@ -126,20 +130,22 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     this.tr ("Name"),
                     this.tr ("Artist"),
                     this.tr ("Album"),
+                    this.tr ("Disc"),
+                    this.tr ("Track"),
                     this.tr ("Genre"),
                     this.tr ("Year"),
-                    this.tr ("Track"),
                     this.tr ("Duration"),
                     this.tr ("Playcount"),
                     this.tr ("Rating"),
                     this.tr ("Comment")],
-                    ['songid', 'search_value', 'title', 'artist', 'album', 'genre',
-                        'year', 'track', 'duration', 'playcount', 'rating', 'comment']);
+                    ['songid', 'search_value', 'title', 'artist', 'album', 'disc', 'track',
+                        'genre', 'year', 'duration', 'playcount', 'rating', 'comment']);
 
                 col_name = 2;
                 col_artist = 3;
                 col_album = 4;
-                col_track = 7;
+                col_disc = 5;
+                col_track = 6;
             }
 
             // sort song titles, ignoring leading articles
@@ -156,15 +162,18 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 }
             });
 
-            // sort artists with a subsort of album and track number (with songid as fallback)
-            this.__tm.setSortMethods(col_artist, {
-                ascending  : function(row1, row2) {
-                    var v1 = row1[col_artist].replace (/^(a|an|the)\s+/i, '');
-                    var v2 = row2[col_artist].replace (/^(a|an|the)\s+/i, '');
+            function get_artist_sort_values (row1, row2)
+            {
+                var v1 = row1[col_artist].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                var v2 = row2[col_artist].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                if (v1 == v2)
+                {
+                    v1 = row1[col_album].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                    v2 = row2[col_album].toLowerCase ().replace (/^(a|an|the)\s+/, '');
                     if (v1 == v2)
                     {
-                        v1 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
-                        v2 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
+                        v1 = parseInt (row1[col_disc]);
+                        v2 = parseInt (row2[col_disc]);
                         if (v1 == v2)
                         {
                             v1 = parseInt (row1[col_track]);
@@ -176,60 +185,68 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                             }
                         }
                     }
+                }
+
+                return [v1, v2];
+            }
+
+
+            // sort artists with a subsort of album and track number (with songid as fallback)
+            this.__tm.setSortMethods(col_artist, {
+                ascending  : function(row1, row2) {
+                    var values = get_artist_sort_values (row1, row2);
+                    var v1 = values[0];
+                    var v2 = values[1];
                     return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
                 },
                 descending  : function(row1, row2) {
-                    var v2 = row1[col_artist].replace (/^(a|an|the)\s+/i, '');
-                    var v1 = row2[col_artist].replace (/^(a|an|the)\s+/i, '');
-                    if (v1 == v2)
-                    {
-                        v2 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
-                        v1 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
-                        if (v1 == v2)
-                        {
-                            v2 = parseInt (row1[col_track]);
-                            v1 = parseInt (row2[col_track]);
-                            if (v1 == v2)
-                            {
-                                v2 = parseInt (row1[0]);
-                                v1 = parseInt (row2[0]);
-                            }
-                        }
-                    }
+                    var values = get_artist_sort_values (row1, row2);
+                    var v1 = values[1];
+                    var v2 = values[0];
                     return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
                 }
             });
 
+            function get_album_sort_values (row1, row2)
+            {
+                var v1 = row1[col_album].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                var v2 = row2[col_album].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                if (v1 == v2)
+                {
+                    v1 = row1[col_artist].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                    v2 = row2[col_artist].toLowerCase ().replace (/^(a|an|the)\s+/, '');
+                    if (v1 == v2)
+                    {
+                        v1 = parseInt (row1[col_disc]);
+                        v2 = parseInt (row2[col_disc]);
+                        if (v1 == v2)
+                        {
+                            v1 = parseInt (row1[col_track]);
+                            v2 = parseInt (row2[col_track]);
+                            if (v1 == v2)
+                            {
+                                v1 = parseInt (row1[0]);
+                                v2 = parseInt (row2[0]);
+                            }
+                        }
+                    }
+                }
+
+                return [v1, v2];
+            }
+
             // sort albums with a subsort of track number (with songid as fallback)
             this.__tm.setSortMethods(col_album, {
                 ascending  : function(row1, row2) {
-                    var v1 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
-                    var v2 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
-                    if (v1 == v2)
-                    {
-                        v1 = parseInt (row1[col_track]);
-                        v2 = parseInt (row2[col_track]);
-                        if (v1 == v2)
-                        {
-                            v1 = parseInt (row1[0]);
-                            v2 = parseInt (row2[0]);
-                        }
-                    }
+                    var values = get_album_sort_values (row1, row2);
+                    var v1 = values[0];
+                    var v2 = values[1];
                     return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
                 },
                 descending  : function(row1, row2) {
-                    var v2 = row1[col_album].replace (/^(a|an|the)\s+/i, '');
-                    var v1 = row2[col_album].replace (/^(a|an|the)\s+/i, '');
-                    if (v1 == v2)
-                    {
-                        v2 = parseInt (row1[col_track]);
-                        v1 = parseInt (row2[col_track]);
-                        if (v1 == v2)
-                        {
-                            v2 = parseInt (row1[0]);
-                            v1 = parseInt (row2[0]);
-                        }
-                    }
+                    var values = get_album_sort_values (row1, row2);
+                    var v2 = values[0];
+                    var v1 = values[1];
                     return (v1 < v2) ? -1 : ((v1 > v2) ? 1 : 0);
                 }
             });
@@ -275,7 +292,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             qooxtunes.ui.dlg.wait_popup.show (this.tr ("Loading XBMC library..."));
             this.__rpc.callAsync("AudioLibrary.GetSongs", [
-                ['title', 'artist', 'album', 'genre', 'year', 'track', 'duration', 'playcount', 'rating', 'comment'],
+                ['title', 'artist', 'album', 'disc', 'track', 'genre', 'year', 'duration', 'playcount', 'rating', 'comment'],
                 { 'start' : 0 },
                 { 'order': 'ascending', 'method': 'artist', 'ignorearticle': true }
             ],
@@ -289,8 +306,9 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
                         var search_value = song.title + ' ' + song.artist[0] + ' ' + song.album + ' ' + song.genre + ' ' + song.comment;
 
-                        rowData.push ([song.songid, search_value, song.title, song.artist[0], song.album, song.genre,
-                            year, song.track, qooxtunes.util.time.duration_int_to_str(song.duration),
+                        rowData.push ([song.songid, search_value, song.title, song.artist[0], song.album,
+                            song.disc, song.track,
+                            song.genre, year, qooxtunes.util.time.duration_int_to_str(song.duration),
                             song.playcount, song.rating, song.comment]);
                     }
                     me.__tm.setData(rowData, false);
@@ -319,7 +337,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
                         var search_value = song.title + ' ' + song.artist + ' ' + song.album;
 
-                        rowData.push ([song.id, search_value, song.track_num, song.title, song.artist, song.album]);
+                        rowData.push ([song.id, search_value, song.track_num, song.title, song.artist, song.album, song.disc]);
                     }
 
                     me.__tm.clearAllRows ();
@@ -336,9 +354,13 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     me.clear_selection ();
 
                     // this is sooooo hacky, but
-                    // we need a way to get the table to recaculate its number of rows and its
+                    // we need a way to get the table to recalculate its number of rows and its
                     // scrollbar height, etc.
-                    me._onResize ();
+                    var scrollers = me._getPaneScrollerArr();
+                    for (var i = 0; i < scrollers.length; i++)
+                    {
+                        scrollers[i]._onResizePane ();
+                    }
 
                     qooxtunes.ui.dlg.wait_popup.hide ();
                 }
@@ -417,9 +439,24 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             row.push (data[7]); // album
 
+            if (!this.__limited_columns)
+            {
+                row.push (data[9]);
+            }
+
             var search_value = '';
             if (!this.__limited_columns)
             {
+                // track
+                if (data[8] !== null)
+                {
+                    row.push (parseInt (data[8]));
+                }
+                else
+                {
+                    row.push (null);
+                }
+
                 if (data[4] != null)
                 {
                     row.push (data[4][0]); // genre
@@ -439,18 +476,8 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     row.push (null);
                 }
 
-                // track
-                if (data[8] !== null)
-                {
-                    row.push (parseInt (data[8]));
-                }
-                else
-                {
-                    row.push (null);
-                }
-
-                row.push (this.__tm.getValue (8, row_idx)); // duration (we don't edit this, so get from the table)
-                row.push (this.__tm.getValue (9, row_idx)); // playcount (we don't edit this, so get from the table)
+                row.push (this.__tm.getValue (9, row_idx)); // duration (we don't edit this, so get from the table)
+                row.push (this.__tm.getValue (10, row_idx)); // playcount (we don't edit this, so get from the table)
 
                 // rating
                 if (data[6] !== null)
@@ -462,7 +489,12 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     row.push (null);
                 }
 
-                row.push (data[11]); // comment
+                row.push (data[12]); // comment
+            }
+
+            if (this.__limited_columns)
+            {
+                row.push (data[9]);
             }
 
             var id = row[0];
@@ -521,12 +553,22 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         on_editor_next : function (data)
         {
+            var new_selected_index = this.get_first_selected_index () + 1;
+
             if (data != null)
             {
                 this.update_row (data);
             }
 
-            this.set_selected_index (this.get_first_selected_index () + 1);
+            // something may have happened to our selected row to push it out past
+            // what would have been our next selection; if that happens, we'll drop
+            // our new selection back by one.
+            if (this.get_first_selected_index () > new_selected_index)
+            {
+                new_selected_index--;
+            }
+
+            this.set_selected_index (new_selected_index);
 
             var nav_result = {};
             var sel_items = this.get_selected_items ();
@@ -539,12 +581,22 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
         on_editor_prev : function (data)
         {
+            var new_selected_index = this.get_first_selected_index () - 1;
+
             if (data != null)
             {
                 this.update_row (data);
             }
 
-            this.set_selected_index (this.get_first_selected_index () - 1);
+            // something may have happened to our selected row to push it out prior
+            // what would have been our next selection; if that happens, we'll push
+            // our new selection out by one.
+            if (this.get_first_selected_index () < new_selected_index)
+            {
+                new_selected_index++;
+            }
+
+            this.set_selected_index (new_selected_index);
 
             var nav_result = {};
             var sel_items = this.get_selected_items ();
@@ -643,9 +695,9 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 return;
             }
 
-            // otherwise, if user has selected one song, queue up the next 300...
+            // otherwise, if user has selected one song, queue up the next 50...
             var start_idx = sel_indices[0];
-            var max_idx = start_idx + 300;
+            var max_idx = start_idx + 50;
 
             var num_rows = this.__tm.getRowCount ();
             if (max_idx > num_rows)
@@ -1077,13 +1129,14 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
             tcm.setColumnVisible (0, false);
             tcm.setColumnVisible (1, false);
 
+            // fix the year so it doesn't show up as "2,014".
             if (!this.__limited_columns)
             {
                 var cr = new qx.ui.table.cellrenderer.Number();
                 var nf = new qx.util.format.NumberFormat ();
                 nf.setGroupingUsed (false);
                 cr.setNumberFormat (nf);
-                tcm.setDataCellRenderer(6, cr);
+                tcm.setDataCellRenderer(8, cr);
             }
 
             this.addListener("columnVisibilityMenuCreateEnd", this.on_columnVisibilityMenuCreateEnd, this);

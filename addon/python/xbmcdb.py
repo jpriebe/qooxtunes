@@ -148,10 +148,12 @@ class songdb:
             #### use the LIKE operator (slower, but case-insensitive) as a fallback for
             #### those (hopefully rare) occasions
             if len (rows) == 0:
-                cursor.execute ('SELECT idSong, strTitle, strArtists, strAlbum FROM songview WHERE strPath LIKE ? AND strFileName LIKE ?', (path, basename))
+                cursor.execute ('SELECT idSong, strTitle, strArtists, strAlbum, iTrack FROM songview WHERE strPath LIKE ? AND strFileName LIKE ?', (path, basename))
                 rows = cursor.fetchall ()
                 for row in rows:
                     s.id = row[0]
                     s.title = row[1]
                     s.artist = row[2]
                     s.album = row[3]
+                    s.track = row[4] & 0xffff
+                    s.disc = row[4] >> 16

@@ -12,8 +12,8 @@ Version 1.0.1
 
  - improved sorting in song tables:
      - sort by artist, album, and song name ignore leading articles a, an, the
-     - sort by artist now subsorts by album and track number (or songid if track number is not available)
-     - sort by album now subsorts by track number (or songid if track number is not available)
+     - sort by artist now subsorts by album, disc, track number (or songid if track number is not available)
+     - sort by album now subsorts by artist, disc, track number (or songid if track number is not available)
 
  - select all option in song tables
 
@@ -25,3 +25,12 @@ Version 1.0.1
 
  - added ?update_interval URL parameter to control update intervals (useful for development where the constant
    stream of network requests makes it hard to debug)
+
+ - BUGFIX: search with mixed case -- no results
+
+ - BUGFIX: search for a term, scroll down the page, then type a new search; y scroll bar should reset to 0
+
+ - BUGFIX: editing sequential tracks -- if you change a field that alters the sort order
+           of the song, the "prev" and "next" buttons will give unexpected results
+
+
