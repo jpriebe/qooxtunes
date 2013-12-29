@@ -9,10 +9,6 @@ BUGS
   a now-empty list.  Actually, it seems that if *any* of the songs are
   now ineligible for the filtered results, you get an exception.
 
-- select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't
-appear automatically
-
-
 - can't move a playlist to a folder that is scrolled offscreen
 
 ------------------------------------------------------------------------------------------

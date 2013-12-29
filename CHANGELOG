@@ -33,4 +33,4 @@ Version 1.0.1
  - BUGFIX: editing sequential tracks -- if you change a field that alters the sort order
            of the song, the "prev" and "next" buttons will give unexpected results
 
-
+ - BUGFIX: select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't resize
