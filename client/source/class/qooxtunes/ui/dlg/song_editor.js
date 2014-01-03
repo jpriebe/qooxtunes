@@ -276,7 +276,10 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
 
             var data = [];
 
+            // 0: songid
             data.push (this.__songdetails.songid);
+
+            // 1: title
             var title = this.__tf_title.getValue ().trim ();
             if (title == '')
             {
@@ -287,7 +290,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                 data.push (title);
             }
 
-            // artist
+            // 2: artist
             var artists = [];
             var artist = this.__tf_artist.getValue ().trim ();
             if (artist == '')
@@ -300,7 +303,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                 data.push (artists);
             }
 
-            // albumartist
+            // 3: albumartist
             var albumartists = [];
             var albumartist = this.__tf_albumartist.getValue ().trim ();
             if (albumartist == '')
@@ -313,7 +316,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                 data.push (albumartists);
             }
 
-            // genre
+            // 4: genre
             var genres = [];
             var genre = this.__cb_genre.getValue ();
 
@@ -327,7 +330,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
                 data.push (genres);
             }
 
-            // year
+            // 5: year
             var year = parseInt (this.__tf_year.getValue ().trim ());
             if (year == 0)
             {
@@ -335,14 +338,14 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
             }
             data.push (year);
 
-            // rating
+            // 6: rating
             var rating = parseInt (this.__tf_rating.getValue ().trim ());
             data.push (rating);
 
-            // album
+            // 7: album
             data.push (this.__tf_album.getValue ().trim ());
 
-            // track
+            // 8: track
             var track = parseInt (this.__tf_track_number.getValue ().trim ());
             if (track == 0)
             {
@@ -350,7 +353,7 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
             }
             data.push (track);
 
-            // disc
+            // 9: disc
             var disc = parseInt (this.__tf_disc_number.getValue ().trim ());
             if (disc == 0)
             {
@@ -358,10 +361,10 @@ qx.Class.define("qooxtunes.ui.dlg.song_editor",
             }
             data.push (disc);
 
-            // duration
+            // 10: duration
             data.push (null);
 
-            // comment
+            // 11: comment
             data.push (this.__ta_comment.getValue ().trim ());
 
             // musicbrainztrackid
