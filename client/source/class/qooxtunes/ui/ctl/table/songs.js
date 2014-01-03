@@ -72,29 +72,28 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
 
             if (column == null)
             {
-                // column 1 contains all our major search columns concatenated
-                this.__search_column = 1;
+                this.__search_column = this.__col_idx['search_value'];
             }
 
             if (column == 'name')
             {
-                this.__search_column = 2;
+                this.__search_column = this.__col_idx['name'];
             }
             if (column == 'artist')
             {
-                this.__search_column = 3;
+                this.__search_column = this.__col_idx['artist'];
             }
             if (column == 'album')
             {
-                this.__search_column = 4;
+                this.__search_column = this.__col_idx['album'];
             }
             if (column == 'genre')
             {
-                this.__search_column = 5;
+                this.__search_column = this.__col_idx['genre'];
             }
             if (column == 'comment')
             {
-                this.__search_column = 11;
+                this.__search_column = this.__col_idx['comment'];
             }
 
             this.__tm.updateView(1);
@@ -882,7 +881,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 return;
             }
 
-            var artist = sel_items[0][3];
+            var artist = sel_items[0][this.__col_idx['artist']];
 
             this.fireDataEvent ('searchChanged', 'artist=' + artist);
         },
@@ -896,7 +895,7 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 return;
             }
 
-            var album = sel_items[0][4];
+            var album = sel_items[0][this.__col_idx['album']];
 
             this.fireDataEvent ('searchChanged', 'album=' + album);
         },
