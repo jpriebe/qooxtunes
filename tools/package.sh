@@ -25,4 +25,4 @@ cp addon/addon.xml $ROOT_DIR
 cp addon/LICENSE.txt $ROOT_DIR
 
 cd /tmp
-zip -r webinterface.qooxtunes-1.0.1.zip webinterface.qooxtunes
+zip -r webinterface.qooxtunes-1.1.0.zip webinterface.qooxtunes
