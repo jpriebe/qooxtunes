@@ -1,7 +1,10 @@
 Version 1.0
 
+ - initial release
 
-Version 1.0.1
+Version 1.1
+
+ - new flat look
 
  - real-time playback controls:
     - display current track info: artwork, title, artist
@@ -11,11 +14,13 @@ Version 1.0.1
     - "now playing" popup to view the queue and delete songs from it
 
  - improved sorting in song tables:
-     - sort by artist, album, and song name ignore leading articles a, an, the
+     - sort by artist, album, and song name ignore leading articles a, an, the (needs i18n support)
      - sort by artist now subsorts by album, disc, track number (or songid if track number is not available)
-     - sort by album now subsorts by artist, disc, track number (or songid if track number is not available)
+     - sort by album now subsorts by album artist, disc, track number (or songid if track number is not available)
 
  - select all option in song tables
+
+ - added album artist and disc # to tables
 
  - added filtering capabilities to song tables
     - filter for artist
@@ -34,3 +39,8 @@ Version 1.0.1
            of the song, the "prev" and "next" buttons will give unexpected results
 
  - BUGFIX: select a playlist, table reloads, but row count doesn't update, and scrollbar doesn't resize
+
+ - BUGFIX: sorting on genre was slow
+
+ - BUGFIX: if editing songs with a search filter active, if the edits make the song ineligible
+   for the filter, an exception is thrown.

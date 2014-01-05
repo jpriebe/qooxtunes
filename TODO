@@ -2,27 +2,6 @@
 BUGS
 ------------------------------------------------------------------------------------------
 
-* column settings not saving!
-
-* sorting on column like "genre" is VERY SLOW
-
-* edit comments on multiple files at once -- comments don't show up in table
-
-* album sort order -- screwed up for compilations -- should be album / disc / track; forget about
-  artist (unless we can do album artist); this will have a side effect of mixing up
-  lists of albums like "The Very Best Of" by different artists, but this is less of
-  a problem than the common case of compilation albums
-
-* if disc or track number is 0, show it as empty in the table
-
-* should probably have a map of all columns to indices so we don't have to constantly
-  fix things in 5 places when we modify the code that sets up and fills the columns
-
-- filter for a genre, e.g. "Traditional".  Select all, change genre.  Save;
-  genres are changed, but software throws exception when trying to load
-  a now-empty list.  Actually, it seems that if *any* of the songs are
-  now ineligible for the filtered results, you get an exception.
-
 - can't move a playlist to a folder that is scrolled offscreen
 
 
