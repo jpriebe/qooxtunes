@@ -180,6 +180,22 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                 return str.toLowerCase ().replace (/^(a|an|the)\s+/, '');
             }
 
+            function get_int_value (row, key)
+            {
+                if (typeof row[ci[key]] === 'undefined')
+                {
+                    return 0;
+                }
+
+                var str = row[ci[key]];
+
+                if (str == null)
+                {
+                    return 0;
+                }
+
+                return parseInt (str);
+            }
 
             function get_name_sort_values (row1, row2)
             {
@@ -278,16 +294,16 @@ qx.Class.define("qooxtunes.ui.ctl.table.songs",
                     var v2 = get_string_value (row2, 'albumartist');
                     if (v1 == v2)
                     {
-                        v1 = parseInt (row1[ci['disc']]);
-                        v2 = parseInt (row2[ci['disc']]);
+                        v1 = get_int_value (row1, 'disc');
+                        v2 = get_int_value (row2, 'disc');
                         if (v1 == v2)
                         {
-                            v1 = parseInt (row1[ci['track']]);
-                            v2 = parseInt (row2[ci['track']]);
+                            v1 = get_int_value (row1, 'track');
+                            v2 = get_int_value (row2, 'track');
                             if (v1 == v2)
                             {
-                                v1 = parseInt (row1[ci['song_id']]);
-                                v2 = parseInt (row2[ci['song_id']]);
+                                v1 = get_int_value (row1, 'song_id');
+                                v2 = get_int_value (row2, 'song_id');
                             }
                         }
                     }
